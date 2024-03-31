@@ -19,7 +19,7 @@ final class WelcomeViewController: UIViewController {
         let label = UILabel(frame: CGRect(x: 140, y: 295, width: 95, height: 60))
         label.text = "???님\n반가워요!"
         label.numberOfLines = 2
-        label.font = UIFont(name: "Pretendard-Bold", size: 18)
+        label.font = UIFont(name: "Pretendard-Bold", size: 25)
         return label
     }()
     
@@ -28,6 +28,7 @@ final class WelcomeViewController: UIViewController {
         button.setTitle("메인으로", for: .normal)
         button.backgroundColor = .daangunOrange
         button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont(name: "Pretendard-Bold", size: 18)
         return button
     }()
     
@@ -36,6 +37,7 @@ final class WelcomeViewController: UIViewController {
         button.setTitle("다시 로그인", for: .normal)
         button.setTitleColor(.gray, for: .normal)
         button.backgroundColor = .daangunGray
+        button.titleLabel?.font = UIFont(name: "Pretendard-Bold", size: 18)
         button.addTarget(self, action: #selector(backToLoginButtonDidTap), for: .touchUpInside)
         return button
     }()
@@ -53,7 +55,7 @@ final class WelcomeViewController: UIViewController {
         setUI()
         setHierarchy()
         bindID()
-    }    
+    }
     
     // MARK: - UI & Layout
     

@@ -16,7 +16,7 @@ final class LoginViewController: UIViewController {
         label.text = "동네라서 가능한 모든것\n당근에서 가까운 이웃과 함께해요."
         label.textColor = .black
         label.textAlignment = .center
-        label.font = UIFont(name: "Pretendard-SemiBold", size: 14)
+        label.font = UIFont(name: "Pretendard-SemiBold", size: 18)
         label.numberOfLines = 2
         return label
     }()
@@ -44,6 +44,7 @@ final class LoginViewController: UIViewController {
         button.backgroundColor = .daangunOrange
         button.setTitle("로그인하기", for: .normal)
         button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont(name: "Pretendard-Bold", size: 18)
         button.addTarget(self, action: #selector(loginButtonDidTap), for: .touchUpInside)
         return button
     }()
@@ -73,7 +74,7 @@ final class LoginViewController: UIViewController {
     @objc
     private func loginButtonDidTap() {
         presentToWelcomeVC()
-//        pushToWelcomeVC()
+        //        pushToWelcomeVC()
     }
     
     private func presentToWelcomeVC() {
