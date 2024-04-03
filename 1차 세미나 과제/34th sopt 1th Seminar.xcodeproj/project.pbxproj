@@ -17,6 +17,7 @@
 		71F12C682BB8E68700459B44 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F12C672BB8E68700459B44 /* WelcomeViewController.swift */; };
 		71F12C6A2BB9797400459B44 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F12C692BB9797400459B44 /* UIColor+.swift */; };
 		71F12C6E2BB9846500459B44 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 71F12C6D2BB9846400459B44 /* Pretendard-Bold.otf */; };
+		71F12C712BBD580B00459B44 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F12C702BBD580B00459B44 /* UIView+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		71F12C672BB8E68700459B44 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		71F12C692BB9797400459B44 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		71F12C6D2BB9846400459B44 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
+		71F12C702BBD580B00459B44 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,10 +68,9 @@
 			children = (
 				71F12C6B2BB9799200459B44 /* App */,
 				71F12C6C2BB97A4200459B44 /* Presentation */,
-				71F12C592BB8024100459B44 /* Assets.xcassets */,
+				71F12C6F2BBD56FF00459B44 /* Resource */,
+				71F12C722BBD580F00459B44 /* Extension */,
 				71F12C5E2BB8024100459B44 /* Info.plist */,
-				71F12C692BB9797400459B44 /* UIColor+.swift */,
-				71F12C6D2BB9846400459B44 /* Pretendard-Bold.otf */,
 			);
 			path = "34th sopt 1th Seminar";
 			sourceTree = "<group>";
@@ -93,6 +94,24 @@
 				71F12C672BB8E68700459B44 /* WelcomeViewController.swift */,
 			);
 			path = Presentation;
+			sourceTree = "<group>";
+		};
+		71F12C6F2BBD56FF00459B44 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				71F12C592BB8024100459B44 /* Assets.xcassets */,
+				71F12C6D2BB9846400459B44 /* Pretendard-Bold.otf */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		71F12C722BBD580F00459B44 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				71F12C692BB9797400459B44 /* UIColor+.swift */,
+				71F12C702BBD580B00459B44 /* UIView+.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -169,6 +188,7 @@
 			files = (
 				71F12C662BB8E66500459B44 /* LoginViewController.swift in Sources */,
 				71F12C682BB8E68700459B44 /* WelcomeViewController.swift in Sources */,
+				71F12C712BBD580B00459B44 /* UIView+.swift in Sources */,
 				71F12C552BB8024000459B44 /* ViewController.swift in Sources */,
 				71F12C512BB8024000459B44 /* AppDelegate.swift in Sources */,
 				71F12C532BB8024000459B44 /* SceneDelegate.swift in Sources */,

@@ -52,9 +52,10 @@ final class WelcomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setUI()
         setHierarchy()
-        bindID()
+        bind()
     }
     
     // MARK: - UI & Layout
@@ -64,9 +65,7 @@ final class WelcomeViewController: UIViewController {
     }
     
     private func setHierarchy() {
-        [daangniImageView, welcomeLabel, mainButton, backButton].forEach {
-            self.view.addSubview($0)
-        }
+        self.view.addSubviews(daangniImageView, welcomeLabel, mainButton, backButton)
     }
     
     @objc
@@ -78,12 +77,14 @@ final class WelcomeViewController: UIViewController {
         }
     }
     
-    private func bindID() {
+    // MARK: - Methods
+    
+    private func bind() {
         
         if let id = id, id.count > 0 {
             self.welcomeLabel.text = "\(id)님 \n반가워요"
         } else {
-            self.welcomeLabel.text = "사용자 입력 부탁 !"
+            self.welcomeLabel.text = "사용자 입력X"
         }
     }
     

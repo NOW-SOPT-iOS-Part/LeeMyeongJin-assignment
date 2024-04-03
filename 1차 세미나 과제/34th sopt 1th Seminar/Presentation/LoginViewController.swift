@@ -71,6 +71,8 @@ final class LoginViewController: UIViewController {
         }
     }
     
+    // MARK: - Methods
+    
     @objc
     private func loginButtonDidTap() {
         presentToWelcomeVC()
