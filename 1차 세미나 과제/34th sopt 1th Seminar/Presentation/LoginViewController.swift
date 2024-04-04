@@ -46,6 +46,7 @@ final class LoginViewController: UIViewController {
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = .subhead01
         button.addTarget(self, action: #selector(loginButtonDidTap), for: .touchUpInside)
+        button.layer.cornerRadius = 3
         return button
     }()
     

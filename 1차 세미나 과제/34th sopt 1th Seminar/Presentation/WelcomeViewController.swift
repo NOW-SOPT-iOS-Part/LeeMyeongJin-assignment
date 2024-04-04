@@ -29,6 +29,7 @@ final class WelcomeViewController: UIViewController {
         button.backgroundColor = .daangunOrange
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = .subhead01
+        button.layer.cornerRadius = 3
         return button
     }()
     
@@ -39,6 +40,7 @@ final class WelcomeViewController: UIViewController {
         button.backgroundColor = .daangunGray
         button.titleLabel?.font = .subhead01
         button.addTarget(self, action: #selector(backToLoginButtonDidTap), for: .touchUpInside)
+        button.layer.cornerRadius = 3
         return button
     }()
     
@@ -65,7 +67,12 @@ final class WelcomeViewController: UIViewController {
     }
     
     private func setHierarchy() {
-        self.view.addSubviews(daangniImageView, welcomeLabel, mainButton, backButton)
+        self.view.addSubviews(
+            daangniImageView,
+            welcomeLabel,
+            mainButton,
+            backButton
+        )
     }
     
     @objc
