@@ -34,7 +34,8 @@ extension UIFont {
         }
         
         guard let font = UIFont(name: fontName, size: size) else {
-            fatalError("Font not found")
+            print("Return system font instead.")
+            return UIFont.systemFont(ofSize: size)
         }
         return font
     }
