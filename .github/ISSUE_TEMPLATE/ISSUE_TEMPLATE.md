@@ -1,5 +1,5 @@
 ---
-name: Custom issue template
+name: issue template
 about: Describe this issue template's purpose here.
 title: ''
 labels: ''
@@ -9,7 +9,7 @@ assignees: ''
 
 ---
 name: iOS Part Issue Template
-about: '🍎 Runnect 이슈 템플릿입니다.'
+about: '🍎 과제 이슈 템플릿입니다.'
 title: '[Feat] 작업 내용'
 labels: ''
 assignees: ''
