@@ -49,15 +49,7 @@ final class LoginViewController: UIViewController {
         $0.backgroundColor = .gray4
     }
     
-    private lazy var loginbutton = UIButton().then {
-        $0.setTitle("로그인 하기", for: .normal)
-        $0.backgroundColor = .clear
-        $0.layer.borderWidth = 1
-        $0.layer.borderColor = UIColor.gray4.cgColor
-        $0.addTarget(self, action: #selector(pushToLoginSuccess), for: .touchUpInside)
-    }
-    
-    private lazy var vStackView = UIStackView(
+    private lazy var vStackViewLogin = UIStackView(
         arrangedSubviews: [
             idTextField,
             passwordTextField
@@ -66,6 +58,15 @@ final class LoginViewController: UIViewController {
         $0.axis = .vertical
         $0.spacing = 7
         $0.distribution = .fillEqually
+    }
+    
+    private lazy var loginButton = UIButton().then {
+        $0.setTitle("로그인 하기", for: .normal)
+        $0.backgroundColor = .clear
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor.gray4.cgColor
+        $0.layer.cornerRadius = 3
+        $0.addTarget(self, action: #selector(pushToLoginSuccess), for: .touchUpInside)
     }
     
     private let idSearch = UILabel().then {
@@ -78,7 +79,6 @@ final class LoginViewController: UIViewController {
         $0.text = "|"
         $0.textColor = .gray4
     }
-    
     
     private let passwordSearch = UILabel().then {
         $0.text = "비밀번호 찾기"
@@ -99,7 +99,7 @@ final class LoginViewController: UIViewController {
     }
     
     private let notAccountLabel = UILabel().then {
-        $0.text = "아직 게정이 없으신가요?"
+        $0.text = "아직 계정이 없으신가요?"
         $0.font = .pretendardFont(weight: 600, size: 14)
         $0.textColor = .gray3
     }
@@ -131,22 +131,12 @@ final class LoginViewController: UIViewController {
     
     // MARK: - Life Cycles
     
-    /*
-     #D6D6D6 gray1
-     #9C9C9C gray2
-     #626262 gray3
-     #2E2E2E gray4
-     #191919 gray5
-     */
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setUI()
         setHierarchy()
         setLayout()
-        setDelegate()
-        setRegister()
     }
     
     
@@ -159,8 +149,8 @@ final class LoginViewController: UIViewController {
     private func setHierarchy() {
         self.view.addSubviews(
             loginTitle,
-            vStackView,
-            loginbutton,
+            vStackViewLogin,
+            loginButton,
             hStackViewInfoFirst,
             hStackViewInfoSecond
         )
@@ -173,20 +163,20 @@ final class LoginViewController: UIViewController {
             $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(4)
         }
         
-        vStackView.snp.makeConstraints {
+        vStackViewLogin.snp.makeConstraints {
             $0.top.equalTo(self.loginTitle.snp.bottom).offset(31)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(52 + 52 + 7)
         }
         
-        loginbutton.snp.makeConstraints {
-            $0.top.equalTo(vStackView.snp.bottom).offset(21)
+        loginButton.snp.makeConstraints {
+            $0.top.equalTo(vStackViewLogin.snp.bottom).offset(21)
             $0.height.equalTo(52)
             $0.leading.trailing.equalToSuperview().inset(20)
         }
         
         hStackViewInfoFirst.snp.makeConstraints {
-            $0.top.equalTo(loginbutton.snp.bottom).offset(31)
+            $0.top.equalTo(loginButton.snp.bottom).offset(31)
             $0.height.equalTo(22)
             $0.leading.trailing.equalToSuperview().inset(85)
         }
@@ -196,15 +186,6 @@ final class LoginViewController: UIViewController {
             $0.height.equalTo(22)
             $0.leading.trailing.equalToSuperview().inset(51)
         }
-        
-    }
-    
-    private func setDelegate() {
-        
-    }
-    
-    private func setRegister() {
-        
     }
     
     @objc
@@ -213,8 +194,8 @@ final class LoginViewController: UIViewController {
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationController?.pushViewController(welcomeViewController, animated: true)
     }
-    
 }
+
 
 /*
  #D6D6D6 gray1
