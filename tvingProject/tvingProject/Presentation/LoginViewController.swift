@@ -12,7 +12,6 @@ import Then
 
 final class LoginViewController: UIViewController {
     
-    
     // MARK: - Property
     
     private let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
@@ -39,9 +38,6 @@ final class LoginViewController: UIViewController {
         $0.layer.cornerRadius = 3
         $0.backgroundColor = .gray4
         $0.textColor = .white
-        
-        $0.autocorrectionType = .no
-        $0.spellCheckingType = .no
     }
     
     private let passwordTextField = UITextField().then {
@@ -58,9 +54,6 @@ final class LoginViewController: UIViewController {
         $0.layer.cornerRadius = 3
         $0.backgroundColor = .gray4
         $0.textColor = .white
-        
-        $0.autocorrectionType = .no
-        $0.spellCheckingType = .no
     }
     
     private lazy var vStackViewLogin = UIStackView(
@@ -77,14 +70,11 @@ final class LoginViewController: UIViewController {
     private lazy var loginButton = UIButton().then {
         $0.setTitle("로그인 하기", for: .normal)
         $0.titleLabel?.font = .pretendardFont(weight: 600, size: 14)
-        // 버튼 기본 배경색 설정
         $0.backgroundColor = .clear
-        
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor.gray4.cgColor
         $0.layer.cornerRadius = 3
         $0.addTarget(self, action: #selector(pushToLoginSuccess), for: .touchUpInside)
-        
         $0.isEnabled = false
     }
     
@@ -115,9 +105,7 @@ final class LoginViewController: UIViewController {
     private lazy var togglePasswordButton = UIButton().then {
         $0.setImage(UIImage(resource: .icEyeSlash), for: .normal)
         $0.isHidden = true
-        
         $0.addTarget(self, action: #selector(togglePasswordTapped), for: .touchDown)
-        
     }
     
     private lazy var hStackViewInfoFirst = UIStackView(
@@ -138,7 +126,7 @@ final class LoginViewController: UIViewController {
         $0.textColor = .gray3
     }
     
-    private let makeNickNameLabel = UILabel().then {
+    private lazy var makeNickNameLabel = UILabel().then {
         
         let attributes: [NSAttributedString.Key: Any] = [
             .underlineStyle: NSUnderlineStyle.single.rawValue,
@@ -150,6 +138,12 @@ final class LoginViewController: UIViewController {
             string: "TVING ID 회원가입하기",
             attributes: attributes
         )
+        
+        $0.isUserInteractionEnabled = true
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(presentToNicknameBottomSheet))
+        
+        $0.addGestureRecognizer(tapGesture)
     }
     
     private lazy var hStackViewInfoSecond = UIStackView(
@@ -240,15 +234,22 @@ final class LoginViewController: UIViewController {
         passwordTextField.delegate = self
     }
     
-    
-    // MARK: - @objc
+    // MARK: - @objc Function
     
     @objc
     private func pushToLoginSuccess() {
         let welcomeViewController = WelcomeViewController()
+        welcomeViewController.setWelcomeLabel(welcomeLabel: idTextField.text ?? "")
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationController?.pushViewController(welcomeViewController, animated: true)
     }
+    
+    @objc
+    private func presentToNicknameBottomSheet() {
+        let nicknameBottomSheet = NickNameBottomSheetVC()
+        self.present(nicknameBottomSheet, animated: true)
+    }
+    
     
     @objc
     private func togglePasswordTapped() {
@@ -264,12 +265,12 @@ final class LoginViewController: UIViewController {
     @objc
     private func deletePasswordTapped() {
         passwordTextField.text = ""
-        updateButtonVisibility()
+        updateButtonEnable()
     }
     
     // MARK: - Methods
     
-    private func updateButtonVisibility() {
+    private func updateButtonEnable() {
         let isPasswordFieldEmpty = passwordTextField.text?.isEmpty ?? true
         allDeleteButton.isHidden = isPasswordFieldEmpty
         togglePasswordButton.isHidden = isPasswordFieldEmpty
@@ -277,13 +278,10 @@ final class LoginViewController: UIViewController {
         updateButtonStyle(button: self.loginButton, enabled: !isPasswordFieldEmpty)
     }
     
-    
     private func validateAndToggleLoginButton() {
         let isEmailValid = isValidEmail(idTextField.text)
         let isPasswordValid = isValidPassword(passwordTextField.text)
-        
         let isFormValid = isEmailValid && isPasswordValid
-        loginButton.isEnabled = isFormValid
         
         updateButtonStyle(button: self.loginButton, enabled: isFormValid)
     }
@@ -300,8 +298,10 @@ final class LoginViewController: UIViewController {
         return string.range(of: self.passwordRegex, options: .regularExpression) != nil
     }
     
-    
     private func updateButtonStyle(button: UIButton, enabled: Bool) {
+        
+        loginButton.isEnabled = enabled
+        
         if enabled {
             button.backgroundColor = .tvingRed
             button.setTitleColor(.white, for: .normal)
@@ -312,9 +312,6 @@ final class LoginViewController: UIViewController {
     }
     
 }
-
-
-
 
 // MARK: - UITextFieldDelegate
 
@@ -332,7 +329,6 @@ extension LoginViewController: UITextFieldDelegate {
             }
         }
     }
-    
 }
 
 
@@ -344,3 +340,63 @@ extension LoginViewController: UITextFieldDelegate {
  #2E2E2E gray4
  #191919 gray5
  */
+
+class HalfSizePresentationController: UIPresentationController {
+    private lazy var dimmingView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        view.alpha = 0
+        
+        // 탭 제스처 인식기 추가
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissController))
+        view.addGestureRecognizer(tap)
+        
+        return view
+    }()
+    
+    @objc private func dismissController() {
+        presentedViewController.dismiss(animated: true)
+    }
+    
+    override var frameOfPresentedViewInContainerView: CGRect {
+        guard let containerView = containerView else {
+            return .zero
+        }
+        let height = containerView.bounds.height / 2
+        let y = containerView.bounds.height - height
+        return CGRect(x: 0, y: y, width: containerView.bounds.width, height: height)
+    }
+    
+    override func presentationTransitionWillBegin() {
+        super.presentationTransitionWillBegin()
+        containerView?.insertSubview(dimmingView, at: 0)
+        
+        NSLayoutConstraint.activate([
+            dimmingView.topAnchor.constraint(equalTo: containerView!.topAnchor),
+            dimmingView.bottomAnchor.constraint(equalTo: containerView!.bottomAnchor),
+            dimmingView.leadingAnchor.constraint(equalTo: containerView!.leadingAnchor),
+            dimmingView.trailingAnchor.constraint(equalTo: containerView!.trailingAnchor),
+        ])
+        
+        presentedView?.layer.cornerRadius = 20
+        presentedView?.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        
+        if let coordinator = presentedViewController.transitionCoordinator {
+            coordinator.animate(alongsideTransition: { _ in
+                self.dimmingView.alpha = 1
+            })
+        }
+    }
+    
+    override func dismissalTransitionWillBegin() {
+        if let coordinator = presentedViewController.transitionCoordinator {
+            coordinator.animate(alongsideTransition: { _ in
+                self.dimmingView.alpha = 0
+            }) { _ in
+                self.dimmingView.removeFromSuperview()
+            }
+        }
+    }
+}
+
