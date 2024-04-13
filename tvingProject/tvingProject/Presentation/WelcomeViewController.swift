@@ -12,6 +12,8 @@ import Then
 
 final class WelcomeViewController: UIViewController {
     
+    // MARK: - UIComponents
+    
     private let welcomeLabel = UILabel().then {
         $0.text = ""
         $0.font = .pretendardFont(weight: 700, size: 23)
@@ -19,10 +21,15 @@ final class WelcomeViewController: UIViewController {
         $0.numberOfLines = 2
     }
     
-    // MARK: - UIComponents
-    
     private let welcomeImage = UIImageView().then {
         $0.image = UIImage(resource: .imgTVING)
+    }
+    
+    private lazy var backButton = UIButton().then {
+        $0.setTitle("메인으로", for: .normal)
+        $0.titleLabel?.font = .pretendardFont(weight: 600, size: 14)
+        $0.addTarget(self, action: #selector(popViewController), for: .touchUpInside)
+        $0.backgroundColor = .tvingRed
     }
     
     // MARK: - Life Cycles
@@ -50,7 +57,11 @@ final class WelcomeViewController: UIViewController {
     }
     
     private func setHierarchy() {
-        view.addSubviews(welcomeImage, welcomeLabel)
+        view.addSubviews(
+            welcomeImage,
+            welcomeLabel,
+            backButton
+        )
     }
     
     private func setLayout() {
@@ -65,6 +76,14 @@ final class WelcomeViewController: UIViewController {
             $0.top.equalTo(welcomeImage.snp.bottom).offset(67)
             $0.centerX.equalToSuperview()
         }
+        
+        backButton.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview().inset(66)
+            $0.height.equalTo(52)
+        }
+        
+        
     }
     
     private func setDelegate() {
