@@ -12,6 +12,12 @@ import Then
 
 final class LoginViewController: UIViewController {
     
+    
+    // MARK: - Property
+    
+    private let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+    private let passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]).{8,}$"
+    
     // MARK: - UIComponents
     
     private lazy var loginTitle = UILabel().then {
@@ -32,6 +38,10 @@ final class LoginViewController: UIViewController {
         $0.addLeftPadding(width: 22)
         $0.layer.cornerRadius = 3
         $0.backgroundColor = .gray4
+        $0.textColor = .white
+        
+        $0.autocorrectionType = .no
+        $0.spellCheckingType = .no
     }
     
     private let passwordTextField = UITextField().then {
@@ -47,6 +57,10 @@ final class LoginViewController: UIViewController {
         $0.isSecureTextEntry = true
         $0.layer.cornerRadius = 3
         $0.backgroundColor = .gray4
+        $0.textColor = .white
+        
+        $0.autocorrectionType = .no
+        $0.spellCheckingType = .no
     }
     
     private lazy var vStackViewLogin = UIStackView(
@@ -169,6 +183,16 @@ final class LoginViewController: UIViewController {
             $0.height.equalTo(52 + 52 + 7)
         }
         
+        allDeleteButton.snp.makeConstraints {
+            $0.top.equalTo(passwordTextField.snp.top).offset(16)
+            $0.trailing.equalTo(passwordTextField.snp.trailing).inset(56)
+        }
+        
+        togglePasswordButton.snp.makeConstraints {
+            $0.top.equalTo(passwordTextField.snp.top).offset(16)
+            $0.leading.equalTo(allDeleteButton.snp.trailing).offset(16)
+        }
+        
         loginButton.snp.makeConstraints {
             $0.top.equalTo(vStackViewLogin.snp.bottom).offset(21)
             $0.height.equalTo(52)
@@ -187,6 +211,14 @@ final class LoginViewController: UIViewController {
             $0.leading.trailing.equalToSuperview().inset(51)
         }
     }
+    
+    private func setDelegate() {
+        idTextField.delegate = self
+        passwordTextField.delegate = self
+    }
+    
+    
+    // MARK: - @objc
     
     @objc
     private func pushToLoginSuccess() {
