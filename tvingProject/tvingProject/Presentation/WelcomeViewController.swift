@@ -12,6 +12,13 @@ import Then
 
 final class WelcomeViewController: UIViewController {
     
+    private let welcomeLabel = UILabel().then {
+        $0.text = ""
+        $0.font = .pretendardFont(weight: 700, size: 23)
+        $0.textColor = .gray1
+        $0.numberOfLines = 2
+    }
+    
     // MARK: - UIComponents
     
     private let welcomeImage = UIImageView().then {
@@ -43,7 +50,7 @@ final class WelcomeViewController: UIViewController {
     }
     
     private func setHierarchy() {
-        view.addSubviews(welcomeImage)
+        view.addSubviews(welcomeImage, welcomeLabel)
     }
     
     private func setLayout() {
@@ -54,6 +61,10 @@ final class WelcomeViewController: UIViewController {
             $0.leading.trailing.equalToSuperview()
         }
         
+        welcomeLabel.snp.makeConstraints {
+            $0.top.equalTo(welcomeImage.snp.bottom).offset(67)
+            $0.centerX.equalToSuperview()
+        }
     }
     
     private func setDelegate() {
@@ -66,6 +77,10 @@ final class WelcomeViewController: UIViewController {
     
     @objc private func popViewController() {
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    func setWelcomeLabel(welcomeLabel: String) {
+        self.welcomeLabel.text = welcomeLabel
     }
     
 }
