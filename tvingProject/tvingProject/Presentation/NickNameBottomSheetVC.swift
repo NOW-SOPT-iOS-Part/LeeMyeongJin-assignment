@@ -48,8 +48,6 @@ final class NickNameBottomSheetVC: UIViewController {
         setUI()
         setHierarchy()
         setLayout()
-        setDelegate()
-        setRegister()
     }
     
     
@@ -72,14 +70,6 @@ final class NickNameBottomSheetVC: UIViewController {
             $0.top.equalToSuperview().offset(50)
             $0.leading.equalToSuperview().offset(20)
         }
-    }
-    
-    private func setDelegate() {
-        
-    }
-    
-    private func setRegister() {
-        
     }
     
     func setData(nickName: String) {
