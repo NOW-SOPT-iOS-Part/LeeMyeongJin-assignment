@@ -40,8 +40,6 @@ final class WelcomeViewController: UIViewController {
         setUI()
         setHierarchy()
         setLayout()
-        setDelegate()
-        setRegister()
     }
     
     
@@ -82,15 +80,6 @@ final class WelcomeViewController: UIViewController {
             $0.bottom.equalToSuperview().inset(66)
             $0.height.equalTo(52)
         }
-        
-        
-    }
-    
-    private func setDelegate() {
-        
-    }
-    
-    private func setRegister() {
         
     }
     
