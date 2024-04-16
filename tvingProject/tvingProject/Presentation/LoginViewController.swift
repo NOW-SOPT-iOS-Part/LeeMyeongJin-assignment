@@ -17,6 +17,8 @@ final class LoginViewController: UIViewController {
     private let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
     private let passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]).{8,}$"
     
+    var userNickName: String = ""
+    
     // MARK: - UIComponents
     
     private lazy var loginTitle = UILabel().then {
@@ -239,7 +241,12 @@ final class LoginViewController: UIViewController {
     @objc
     private func pushToLoginSuccess() {
         let welcomeViewController = WelcomeViewController()
-        welcomeViewController.setWelcomeLabel(welcomeLabel: idTextField.text ?? "")
+        
+        if self.userNickName.isEmpty {
+            welcomeViewController.setWelcomeLabel(welcomeLabel: idTextField.text ?? "")
+        } else {
+            welcomeViewController.setWelcomeLabel(welcomeLabel: self.userNickName)
+        }
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationController?.pushViewController(welcomeViewController, animated: true)
     }
@@ -247,6 +254,7 @@ final class LoginViewController: UIViewController {
     @objc
     private func presentToNicknameBottomSheet() {
         let nicknameBottomSheet = NickNameBottomSheetVC()
+        nicknameBottomSheet.delegate = self
         self.present(nicknameBottomSheet, animated: true)
     }
     
@@ -258,7 +266,7 @@ final class LoginViewController: UIViewController {
         if passwordTextField.isSecureTextEntry {
             togglePasswordButton.setImage(UIImage(resource: .icEyeSlash), for: .normal)
         } else {
-            togglePasswordButton.setImage(UIImage(resource: .icEye), for: .normal)  // Assuming .icEye is the icon for visible password
+            togglePasswordButton.setImage(UIImage(resource: .icEye), for: .normal)
         }
     }
     
@@ -329,74 +337,27 @@ extension LoginViewController: UITextFieldDelegate {
             }
         }
     }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField == idTextField {
+            idTextField.layer.borderColor = UIColor.white.cgColor
+            idTextField.layer.borderWidth = 1
+        } else if textField == passwordTextField {
+            passwordTextField.layer.borderColor = UIColor.white.cgColor
+            passwordTextField.layer.borderWidth = 1
+        }
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        textField.layer.borderWidth = 0
+        textField.layer.borderColor = .none
+    }
 }
 
-
-
-/*
- #D6D6D6 gray1
- #9C9C9C gray2
- #626262 gray3
- #2E2E2E gray4
- #191919 gray5
- */
-
-class HalfSizePresentationController: UIPresentationController {
-    private lazy var dimmingView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-        view.alpha = 0
-        
-        // 탭 제스처 인식기 추가
-        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissController))
-        view.addGestureRecognizer(tap)
-        
-        return view
-    }()
-    
-    @objc private func dismissController() {
-        presentedViewController.dismiss(animated: true)
-    }
-    
-    override var frameOfPresentedViewInContainerView: CGRect {
-        guard let containerView = containerView else {
-            return .zero
-        }
-        let height = containerView.bounds.height / 2
-        let y = containerView.bounds.height - height
-        return CGRect(x: 0, y: y, width: containerView.bounds.width, height: height)
-    }
-    
-    override func presentationTransitionWillBegin() {
-        super.presentationTransitionWillBegin()
-        containerView?.insertSubview(dimmingView, at: 0)
-        
-        NSLayoutConstraint.activate([
-            dimmingView.topAnchor.constraint(equalTo: containerView!.topAnchor),
-            dimmingView.bottomAnchor.constraint(equalTo: containerView!.bottomAnchor),
-            dimmingView.leadingAnchor.constraint(equalTo: containerView!.leadingAnchor),
-            dimmingView.trailingAnchor.constraint(equalTo: containerView!.trailingAnchor),
-        ])
-        
-        presentedView?.layer.cornerRadius = 20
-        presentedView?.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        
-        if let coordinator = presentedViewController.transitionCoordinator {
-            coordinator.animate(alongsideTransition: { _ in
-                self.dimmingView.alpha = 1
-            })
-        }
-    }
-    
-    override func dismissalTransitionWillBegin() {
-        if let coordinator = presentedViewController.transitionCoordinator {
-            coordinator.animate(alongsideTransition: { _ in
-                self.dimmingView.alpha = 0
-            }) { _ in
-                self.dimmingView.removeFromSuperview()
-            }
-        }
+extension LoginViewController: LoginViewControllerProtocol {
+    func dataBind(nickName: String) {
+        print("LoginViewController의 userNickName에 \(nickName)이 대입 됌")
+        self.userNickName = nickName
     }
 }
 
