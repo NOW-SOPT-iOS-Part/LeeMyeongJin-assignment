@@ -88,7 +88,7 @@ final class WelcomeViewController: UIViewController {
     }
     
     func setWelcomeLabel(welcomeLabel: String) {
-        self.welcomeLabel.text = welcomeLabel
+        self.welcomeLabel.text = "\(welcomeLabel) 님 반갑습니다."
     }
     
 }
