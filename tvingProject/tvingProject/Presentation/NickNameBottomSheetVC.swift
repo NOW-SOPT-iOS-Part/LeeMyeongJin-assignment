@@ -16,7 +16,10 @@ protocol LoginViewControllerProtocol: AnyObject {
 
 final class NickNameBottomSheetVC: UIViewController {
     
+    // MARK: - Properties
+    
     weak var delegate: LoginViewControllerProtocol?
+    
     // MARK: - UIComponents
     
     private let nickName = UILabel().then {
@@ -97,18 +100,19 @@ final class NickNameBottomSheetVC: UIViewController {
         }
     }
     
+    // MARK: - Methods
+    
     private func setDelegate() {
         nicknameTextField.delegate = self
     }
     
-    // MARK: - Methods
+    // MARK: - @objc Function
     
     @objc
     private func saveButtonTapped() {
         delegate?.dataBind(nickName: self.userNickName)
         self.dismiss(animated: true, completion: nil)
     }
-    
 }
 
 // MARK: - UIViewControllerTransitioningDelegate
@@ -118,7 +122,6 @@ extension NickNameBottomSheetVC: UIViewControllerTransitioningDelegate {
         return HalfSizePresentationController(presentedViewController: presented, presenting: presenting)
     }
 }
-
 
 // MARK: - UITextFieldDelegate
 
