@@ -19,6 +19,7 @@ final class WelcomeViewController: UIViewController {
         $0.font = .pretendardFont(weight: 700, size: 23)
         $0.textColor = .gray1
         $0.numberOfLines = 2
+        $0.textAlignment = .center
     }
     
     private let welcomeImage = UIImageView().then {
@@ -72,7 +73,7 @@ final class WelcomeViewController: UIViewController {
         
         welcomeLabel.snp.makeConstraints {
             $0.top.equalTo(welcomeImage.snp.bottom).offset(67)
-            $0.centerX.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(65)
         }
         
         backButton.snp.makeConstraints {
