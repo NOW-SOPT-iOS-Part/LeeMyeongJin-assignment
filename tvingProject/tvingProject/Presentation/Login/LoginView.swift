@@ -1,8 +1,8 @@
 //
-//  LoginViewController.swift
+//  LoginView.swift
 //  tvingProject
 //
-//  Created by 이명진 on 4/7/24.
+//  Created by 이명진 on 4/16/24.
 //
 
 import UIKit
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class LoginViewController: UIViewController {
+final class LoginView: UIView {
     
     // MARK: - Property
     
@@ -27,7 +27,7 @@ final class LoginViewController: UIViewController {
         $0.textColor = .gray1
     }
     
-    private lazy var idTextField = UITextField().then {
+    lazy var idTextField = UITextField().then {
         $0.attributedPlaceholder = NSAttributedString(
             string: "아이디",
             attributes: [
@@ -42,7 +42,7 @@ final class LoginViewController: UIViewController {
         $0.textColor = .white
     }
     
-    private let passwordTextField = UITextField().then {
+    lazy var passwordTextField = UITextField().then {
         $0.attributedPlaceholder = NSAttributedString(
             string: "비밀번호",
             attributes: [
@@ -69,14 +69,13 @@ final class LoginViewController: UIViewController {
         $0.distribution = .fillEqually
     }
     
-    private lazy var loginButton = UIButton().then {
+    lazy var loginButton = UIButton().then {
         $0.setTitle("로그인 하기", for: .normal)
         $0.titleLabel?.font = .pretendardFont(weight: 600, size: 14)
         $0.backgroundColor = .clear
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor.gray4.cgColor
         $0.layer.cornerRadius = 3
-        $0.addTarget(self, action: #selector(pushToLoginSuccess), for: .touchUpInside)
         $0.isEnabled = false
     }
     
@@ -97,17 +96,15 @@ final class LoginViewController: UIViewController {
         $0.textColor = .gray2
     }
     
-    private lazy var allDeleteButton = UIButton().then {
+    lazy var allDeleteButton = UIButton().then {
         $0.setImage(UIImage(resource: .icCancel), for: .normal)
         $0.tintColor = .white
         $0.isHidden = true
-        $0.addTarget(self, action: #selector(deletePasswordTapped), for: .touchUpInside)
     }
     
-    private lazy var togglePasswordButton = UIButton().then {
+    lazy var togglePasswordButton = UIButton().then {
         $0.setImage(UIImage(resource: .icEyeSlash), for: .normal)
         $0.isHidden = true
-        $0.addTarget(self, action: #selector(togglePasswordTapped), for: .touchDown)
     }
     
     private lazy var hStackViewInfoFirst = UIStackView(
@@ -128,7 +125,7 @@ final class LoginViewController: UIViewController {
         $0.textColor = .gray3
     }
     
-    private lazy var makeNickNameLabel = UILabel().then {
+    lazy var makeNickNameLabel = UILabel().then {
         
         let attributes: [NSAttributedString.Key: Any] = [
             .underlineStyle: NSUnderlineStyle.single.rawValue,
@@ -142,10 +139,6 @@ final class LoginViewController: UIViewController {
         )
         
         $0.isUserInteractionEnabled = true
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(presentToNicknameBottomSheet))
-        
-        $0.addGestureRecognizer(tapGesture)
     }
     
     private lazy var hStackViewInfoSecond = UIStackView(
@@ -159,26 +152,29 @@ final class LoginViewController: UIViewController {
         $0.distribution = .equalSpacing
     }
     
-    // MARK: - Life Cycles
+    // MARK: - init
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override init(frame: CGRect = .zero) {
+        super.init(frame: frame)
         
         setUI()
         setHierarchy()
         setLayout()
-        setDelegate()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     
     // MARK: - UI & Layout
     
     private func setUI() {
-        view.backgroundColor = .black
+        backgroundColor = .black
     }
     
     private func setHierarchy() {
-        self.view.addSubviews(
+        addSubviews(
             loginTitle,
             vStackViewLogin,
             allDeleteButton,
@@ -190,10 +186,9 @@ final class LoginViewController: UIViewController {
     }
     
     private func setLayout() {
-        
         loginTitle.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(4)
+            $0.top.equalTo(safeAreaLayoutGuide).offset(4)
         }
         
         vStackViewLogin.snp.makeConstraints {
@@ -230,134 +225,4 @@ final class LoginViewController: UIViewController {
             $0.leading.trailing.equalToSuperview().inset(51)
         }
     }
-    
-    private func setDelegate() {
-        idTextField.delegate = self
-        passwordTextField.delegate = self
-    }
-    
-    // MARK: - @objc Function
-    
-    @objc
-    private func pushToLoginSuccess() {
-        let welcomeViewController = WelcomeViewController()
-        
-        if self.userNickName.isEmpty {
-            welcomeViewController.setWelcomeLabel(welcomeLabel: idTextField.text ?? "")
-        } else {
-            welcomeViewController.setWelcomeLabel(welcomeLabel: self.userNickName)
-        }
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        navigationController?.pushViewController(welcomeViewController, animated: true)
-    }
-    
-    @objc
-    private func presentToNicknameBottomSheet() {
-        let nicknameBottomSheet = NickNameBottomSheetVC()
-        nicknameBottomSheet.delegate = self
-        self.present(nicknameBottomSheet, animated: true)
-    }
-    
-    
-    @objc
-    private func togglePasswordTapped() {
-        passwordTextField.isSecureTextEntry.toggle()
-        
-        if passwordTextField.isSecureTextEntry {
-            togglePasswordButton.setImage(UIImage(resource: .icEyeSlash), for: .normal)
-        } else {
-            togglePasswordButton.setImage(UIImage(resource: .icEye), for: .normal)
-        }
-    }
-    
-    @objc
-    private func deletePasswordTapped() {
-        passwordTextField.text = ""
-        updateButtonEnable()
-    }
-    
-    // MARK: - Methods
-    
-    private func updateButtonEnable() {
-        let isPasswordFieldEmpty = passwordTextField.text?.isEmpty ?? true
-        allDeleteButton.isHidden = isPasswordFieldEmpty
-        togglePasswordButton.isHidden = isPasswordFieldEmpty
-        
-        updateButtonStyle(button: self.loginButton, enabled: !isPasswordFieldEmpty)
-    }
-    
-    private func validateAndToggleLoginButton() {
-        let isEmailValid = isValidEmail(idTextField.text)
-        let isPasswordValid = isValidPassword(passwordTextField.text)
-        let isFormValid = isEmailValid && isPasswordValid
-        
-        updateButtonStyle(button: self.loginButton, enabled: isFormValid)
-    }
-    
-    private func isValidEmail(_ string: String?) -> Bool {
-        guard let string = string else { return false }
-        
-        return string.range(of: self.emailRegex, options: .regularExpression) != nil
-    }
-    
-    private func isValidPassword(_ string: String?) -> Bool {
-        guard let string = string else { return false }
-        
-        return string.range(of: self.passwordRegex, options: .regularExpression) != nil
-    }
-    
-    private func updateButtonStyle(button: UIButton, enabled: Bool) {
-        
-        loginButton.isEnabled = enabled
-        
-        if enabled {
-            button.backgroundColor = .tvingRed
-            button.setTitleColor(.white, for: .normal)
-        } else {
-            button.backgroundColor = .clear
-            button.setTitleColor(.gray2, for: .normal)
-        }
-    }
-    
 }
-
-// MARK: - UITextFieldDelegate
-
-extension LoginViewController: UITextFieldDelegate {
-    func textFieldDidChangeSelection(_ textField: UITextField) {
-        validateAndToggleLoginButton()
-        
-        if textField == passwordTextField {
-            if let text = textField.text, text.isEmpty {
-                allDeleteButton.isHidden = true
-                togglePasswordButton.isHidden = true
-            } else {
-                allDeleteButton.isHidden = false
-                togglePasswordButton.isHidden = false
-            }
-        }
-    }
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        if textField == idTextField {
-            idTextField.layer.borderColor = UIColor.white.cgColor
-            idTextField.layer.borderWidth = 1
-        } else if textField == passwordTextField {
-            passwordTextField.layer.borderColor = UIColor.white.cgColor
-            passwordTextField.layer.borderWidth = 1
-        }
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        textField.layer.borderWidth = 0
-        textField.layer.borderColor = .none
-    }
-}
-
-extension LoginViewController: LoginViewControllerProtocol {
-    func dataBind(nickName: String) {
-        print("LoginViewController의 userNickName에 \(nickName)이 대입 됌")
-        self.userNickName = nickName
-    }
-}
-
