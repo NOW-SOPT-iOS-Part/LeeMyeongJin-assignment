@@ -22,7 +22,7 @@ final class WelcomeView: UIView {
         $0.textAlignment = .center
     }
     
-    let welcomeImage = UIImageView().then {
+    private let welcomeImage = UIImageView().then {
         $0.image = UIImage(resource: .imgTVING)
     }
     

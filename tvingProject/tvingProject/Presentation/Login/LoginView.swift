@@ -125,7 +125,7 @@ final class LoginView: UIView {
         $0.textColor = .gray3
     }
     
-    lazy var makeNickNameLabel = UILabel().then {
+    let makeNickNameLabel = UILabel().then {
         
         let attributes: [NSAttributedString.Key: Any] = [
             .underlineStyle: NSUnderlineStyle.single.rawValue,
