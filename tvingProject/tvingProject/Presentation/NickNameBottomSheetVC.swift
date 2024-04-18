@@ -94,7 +94,7 @@ final class NickNameBottomSheetVC: UIViewController {
         }
         
         saveButton.snp.makeConstraints {
-            $0.bottom.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview().inset(30)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(52)
         }
