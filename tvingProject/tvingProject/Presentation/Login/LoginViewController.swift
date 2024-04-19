@@ -137,6 +137,7 @@ final class LoginViewController: UIViewController {
 // MARK: - UITextFieldDelegate
 
 extension LoginViewController: UITextFieldDelegate {
+    
     func textFieldDidChangeSelection(_ textField: UITextField) {
         validateAndToggleLoginButton()
         
@@ -151,20 +152,18 @@ extension LoginViewController: UITextFieldDelegate {
         }
     }
     
+    // 해당 텍스트 필드 강조 코드
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        if textField == loginView.idTextField {
-            loginView.idTextField.layer.borderColor = UIColor.white.cgColor
-            loginView.idTextField.layer.borderWidth = 1
-        } else if textField == loginView.passwordTextField {
-            loginView.passwordTextField.layer.borderColor = UIColor.white.cgColor
-            loginView.passwordTextField.layer.borderWidth = 1
-        }
+        textField.layer.borderColor = UIColor.white.cgColor
+        textField.layer.borderWidth = 1
     }
     
+    // 텍스트 필드 사용 끝나면
     func textFieldDidEndEditing(_ textField: UITextField) {
         textField.layer.borderWidth = 0
-        textField.layer.borderColor = .none
+        textField.layer.borderColor = nil
     }
+    
 }
 
 extension LoginViewController: LoginViewControllerProtocol {

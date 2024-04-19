@@ -22,20 +22,20 @@ final class WelcomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupNavigationBar()
-        bindActions()
+        setNavigationBar()
+        setAddTarget()
     }
     
     
     // MARK: - Methods
     
-    private func setupNavigationBar() {
+    private func setNavigationBar() {
         let backImage = UIImage(resource: .icLeftArrow)
         navigationController?.navigationBar.tintColor = .gray2
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: backImage, style: .plain, target: self, action: #selector(popViewController))
     }
     
-    private func bindActions() {
+    private func setAddTarget() {
         welcomeView.backButton.addTarget(self, action: #selector(popViewController), for: .touchUpInside)
     }
     
