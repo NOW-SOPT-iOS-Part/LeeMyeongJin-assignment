@@ -26,7 +26,7 @@ final class WelcomeView: UIView {
         $0.image = UIImage(resource: .imgTVING)
     }
     
-    let backButton = UIButton().then {
+    let mainButton = UIButton().then {
         $0.setTitle("메인으로", for: .normal)
         $0.titleLabel?.font = .pretendardFont(weight: 600, size: 14)
         $0.backgroundColor = .tvingRed
@@ -57,7 +57,7 @@ final class WelcomeView: UIView {
         addSubviews(
             welcomeImage,
             welcomeLabel,
-            backButton
+            mainButton
         )
     }
     
@@ -65,16 +65,16 @@ final class WelcomeView: UIView {
         welcomeImage.snp.makeConstraints { make in
             make.height.equalTo(210.94)
             make.top.equalTo(safeAreaLayoutGuide).offset(14)
-            make.leading.trailing.equalToSuperview()
+            make.horizontalEdges.equalToSuperview()
         }
         
         welcomeLabel.snp.makeConstraints { make in
             make.top.equalTo(welcomeImage.snp.bottom).offset(67)
-            make.leading.trailing.equalToSuperview().inset(65)
+            make.horizontalEdges.equalToSuperview().inset(65)
         }
         
-        backButton.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(20)
+        mainButton.snp.makeConstraints { make in
+            make.horizontalEdges.equalToSuperview().inset(20)
             make.bottom.equalToSuperview().inset(66)
             make.height.equalTo(52)
         }
