@@ -7,9 +7,6 @@
 
 import UIKit
 
-import SnapKit
-import Then
-
 extension UIViewController {
     
     /// 뷰 컨트롤러가 네비게이션 스택에 있으면 pop 하고, 나머지는  dismiss 합니다.

@@ -8,6 +8,7 @@
 import UIKit
 
 extension UIFont {
+    /// pretendardFont 함수는 Figma Design System이 아래와 같이 볼수 있게 만들어 놓았음
     static func pretendardFont(weight: CGFloat, size: CGFloat) -> UIFont {
         let fontName: String
         switch weight {
