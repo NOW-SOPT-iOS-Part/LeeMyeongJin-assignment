@@ -62,21 +62,21 @@ final class WelcomeView: UIView {
     }
     
     private func setLayout() {
-        welcomeImage.snp.makeConstraints { make in
-            make.height.equalTo(210.94)
-            make.top.equalTo(safeAreaLayoutGuide).offset(14)
-            make.horizontalEdges.equalToSuperview()
+        welcomeImage.snp.makeConstraints {
+            $0.height.equalTo(210.94)
+            $0.top.equalTo(safeAreaLayoutGuide).offset(14)
+            $0.centerX.equalToSuperview()
         }
         
-        welcomeLabel.snp.makeConstraints { make in
-            make.top.equalTo(welcomeImage.snp.bottom).offset(67)
-            make.horizontalEdges.equalToSuperview().inset(65)
+        welcomeLabel.snp.makeConstraints {
+            $0.top.equalTo(welcomeImage.snp.bottom).offset(67)
+            $0.horizontalEdges.equalToSuperview().inset(65)
         }
         
-        mainButton.snp.makeConstraints { make in
-            make.horizontalEdges.equalToSuperview().inset(20)
-            make.bottom.equalToSuperview().inset(66)
-            make.height.equalTo(52)
+        mainButton.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview().inset(66)
+            $0.height.equalTo(52)
         }
     }
 }
