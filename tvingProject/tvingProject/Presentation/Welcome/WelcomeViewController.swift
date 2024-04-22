@@ -11,12 +11,12 @@ final class WelcomeViewController: UIViewController {
     
     // MARK: - UIComponents
     
-    private let welcomeView = WelcomeView()
+    private let rootView = WelcomeView()
     
     // MARK: - Life Cycle
     
     override func loadView() {
-        view = welcomeView
+        self.view = rootView
     }
     
     override func viewDidLoad() {
@@ -36,14 +36,24 @@ final class WelcomeViewController: UIViewController {
     }
     
     private func setAddTarget() {
-        welcomeView.backButton.addTarget(self, action: #selector(popViewController), for: .touchUpInside)
+        rootView.mainButton.addTarget(self, action: #selector(pushToHomeViewController), for: .touchUpInside)
     }
     
     func setWelcomeLabel(welcomeText: String) {
-        welcomeView.welcomeLabel.text = "\(welcomeText) 님 반갑습니다."
+        rootView.welcomeLabel.text = "\(welcomeText) 님 반갑습니다."
     }
     
     // MARK: - @objc Function
+    
+    @objc
+    private func pushToHomeViewController() {
+        
+        guard let window = self.view.window else { return }
+        
+        let homeViewController = HomeViewController()
+        window.rootViewController = homeViewController
+        window.makeKeyAndVisible()
+    }
     
     @objc
     private func popViewController() {

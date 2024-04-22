@@ -14,9 +14,6 @@ final class LoginView: UIView {
     
     // MARK: - Property
     
-    private let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
-    private let passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]).{8,}$"
-    
     var userNickName: String = ""
     
     // MARK: - UIComponents
@@ -27,35 +24,10 @@ final class LoginView: UIView {
         $0.textColor = .gray1
     }
     
-    lazy var idTextField = UITextField().then {
-        $0.attributedPlaceholder = NSAttributedString(
-            string: "아이디",
-            attributes: [
-                .font: UIFont.pretendardFont(weight: 600, size: 15),
-                .foregroundColor: UIColor.gray1
-            ]
-        )
-        
-        $0.addLeftPadding(width: 22)
-        $0.layer.cornerRadius = 3
-        $0.backgroundColor = .gray4
-        $0.textColor = .white
-    }
+    lazy var idTextField = TextFieldFactory.loginTextFieldFactory(title: "아이디")
     
-    lazy var passwordTextField = UITextField().then {
-        $0.attributedPlaceholder = NSAttributedString(
-            string: "비밀번호",
-            attributes: [
-                .font: UIFont.pretendardFont(weight: 600, size: 15),
-                .foregroundColor: UIColor.gray1
-            ]
-        )
-        
-        $0.addLeftPadding(width: 22)
+    lazy var passwordTextField = TextFieldFactory.loginTextFieldFactory(title: "비밀번호").then {
         $0.isSecureTextEntry = true
-        $0.layer.cornerRadius = 3
-        $0.backgroundColor = .gray4
-        $0.textColor = .white
     }
     
     private lazy var vStackViewLogin = UIStackView(
@@ -69,14 +41,11 @@ final class LoginView: UIView {
         $0.distribution = .fillEqually
     }
     
-    lazy var loginButton = UIButton().then {
-        $0.setTitle("로그인 하기", for: .normal)
-        $0.titleLabel?.font = .pretendardFont(weight: 600, size: 14)
+    lazy var loginButton = ButtonFactory.tvingButtonFactory(title: "로그인 하기", radius: 3).then {
         $0.backgroundColor = .clear
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor.gray4.cgColor
         $0.layer.cornerRadius = 3
-        $0.isEnabled = false
     }
     
     private let idSearch = UILabel().then {
@@ -193,7 +162,7 @@ final class LoginView: UIView {
         
         vStackViewLogin.snp.makeConstraints {
             $0.top.equalTo(self.loginTitle.snp.bottom).offset(31)
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.horizontalEdges.equalToSuperview().inset(20)
             $0.height.equalTo(52 + 52 + 7)
         }
         
@@ -210,19 +179,19 @@ final class LoginView: UIView {
         loginButton.snp.makeConstraints {
             $0.top.equalTo(vStackViewLogin.snp.bottom).offset(21)
             $0.height.equalTo(52)
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.horizontalEdges.equalToSuperview().inset(20)
         }
         
         hStackViewInfoFirst.snp.makeConstraints {
             $0.top.equalTo(loginButton.snp.bottom).offset(31)
             $0.height.equalTo(22)
-            $0.leading.trailing.equalToSuperview().inset(85)
+            $0.horizontalEdges.equalToSuperview().inset(85)
         }
         
         hStackViewInfoSecond.snp.makeConstraints {
             $0.top.equalTo(hStackViewInfoFirst.snp.bottom).offset(31)
             $0.height.equalTo(22)
-            $0.leading.trailing.equalToSuperview().inset(51)
+            $0.horizontalEdges.equalToSuperview().inset(51)
         }
     }
 }

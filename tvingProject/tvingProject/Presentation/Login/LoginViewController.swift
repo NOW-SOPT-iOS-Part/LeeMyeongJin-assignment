@@ -16,14 +16,16 @@ final class LoginViewController: UIViewController {
     
     var userNickName: String = ""
     
+    private var passwordVisibility: PasswordVisibility = .hidden
+    
     // MARK: - UIComponents
     
-    private let loginView = LoginView()
+    private let rootView = LoginView()
     
     // MARK: - Life Cycles
     
     override func loadView() {
-        self.view = loginView
+        self.view = rootView
     }
     
     override func viewDidLoad() {
@@ -40,7 +42,7 @@ final class LoginViewController: UIViewController {
         let welcomeViewController = WelcomeViewController()
         
         if self.userNickName.isEmpty {
-            welcomeViewController.setWelcomeLabel(welcomeText: loginView.idTextField.text ?? "")
+            welcomeViewController.setWelcomeLabel(welcomeText: rootView.idTextField.text ?? "")
         } else {
             welcomeViewController.setWelcomeLabel(welcomeText: self.userNickName)
         }
@@ -56,41 +58,35 @@ final class LoginViewController: UIViewController {
     }
     
     
-    @objc
-    private func togglePasswordTapped() {
-        loginView.passwordTextField.isSecureTextEntry.toggle()
-        
-        let isSecure = loginView.passwordTextField.isSecureTextEntry
-        
-        if isSecure {
-            loginView.togglePasswordButton.setImage(UIImage(resource: .icEyeSlash), for: .normal)
-        } else {
-            loginView.togglePasswordButton.setImage(UIImage(resource: .icEye), for: .normal)
-        }
+    @objc private func togglePasswordTapped() {
+        passwordVisibility.toggle()
+        rootView.passwordTextField.isSecureTextEntry = (passwordVisibility == .hidden)
+        rootView.togglePasswordButton.setImage(passwordVisibility.icon, for: .normal)
     }
+
     
     @objc
     private func deletePasswordTapped() {
-        loginView.passwordTextField.text = ""
+        rootView.passwordTextField.text = ""
         updateButtonEnable()
     }
     
     // MARK: - Methods
     
     private func updateButtonEnable() {
-        let isPasswordFieldEmpty = loginView.passwordTextField.text?.isEmpty ?? true
-        loginView.allDeleteButton.isHidden = isPasswordFieldEmpty
-        loginView.togglePasswordButton.isHidden = isPasswordFieldEmpty
+        let isPasswordFieldEmpty = rootView.passwordTextField.text?.isEmpty ?? true
+        rootView.allDeleteButton.isHidden = isPasswordFieldEmpty
+        rootView.togglePasswordButton.isHidden = isPasswordFieldEmpty
         
-        updateButtonStyle(button: loginView.loginButton, enabled: !isPasswordFieldEmpty)
+        updateButtonStyle(button: rootView.loginButton, enabled: !isPasswordFieldEmpty)
     }
     
     private func validateAndToggleLoginButton() {
-        let isEmailValid = isValidEmail(loginView.idTextField.text)
-        let isPasswordValid = isValidPassword(loginView.passwordTextField.text)
+        let isEmailValid = isValidEmail(rootView.idTextField.text)
+        let isPasswordValid = isValidPassword(rootView.passwordTextField.text)
         let isFormValid = isEmailValid && isPasswordValid
         
-        updateButtonStyle(button: loginView.loginButton, enabled: isFormValid)
+        updateButtonStyle(button: rootView.loginButton, enabled: isFormValid)
     }
     
     private func isValidEmail(_ string: String?) -> Bool {
@@ -106,30 +102,25 @@ final class LoginViewController: UIViewController {
     }
     
     private func updateButtonStyle(button: UIButton, enabled: Bool) {
+        let style = enabled ? ButtonStyle.enabled : ButtonStyle.disabled
         
-        loginView.loginButton.isEnabled = enabled
-        
-        if enabled {
-            button.backgroundColor = .tvingRed
-            button.setTitleColor(.white, for: .normal)
-        } else {
-            button.backgroundColor = .clear
-            button.setTitleColor(.gray2, for: .normal)
-        }
+        button.isEnabled = enabled
+        button.backgroundColor = style.backgroundColor
+        button.setTitleColor(style.titleColor, for: .normal)
     }
     
     private func setAddTarget() {
-        loginView.loginButton.addTarget(self, action: #selector(pushToLoginSuccess), for: .touchUpInside)
-        loginView.allDeleteButton.addTarget(self, action: #selector(deletePasswordTapped), for: .touchUpInside)
-        loginView.togglePasswordButton.addTarget(self, action: #selector(togglePasswordTapped), for: .touchUpInside)
+        rootView.loginButton.addTarget(self, action: #selector(pushToLoginSuccess), for: .touchUpInside)
+        rootView.allDeleteButton.addTarget(self, action: #selector(deletePasswordTapped), for: .touchUpInside)
+        rootView.togglePasswordButton.addTarget(self, action: #selector(togglePasswordTapped), for: .touchUpInside)
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(presentToNicknameBottomSheet))
-        loginView.makeNickNameLabel.addGestureRecognizer(tapGesture)
+        rootView.makeNickNameLabel.addGestureRecognizer(tapGesture)
     }
     
     private func setDelegate() {
-        loginView.idTextField.delegate = self
-        loginView.passwordTextField.delegate = self
+        rootView.idTextField.delegate = self
+        rootView.passwordTextField.delegate = self
     }
     
 }
@@ -141,13 +132,13 @@ extension LoginViewController: UITextFieldDelegate {
     func textFieldDidChangeSelection(_ textField: UITextField) {
         validateAndToggleLoginButton()
         
-        if textField == loginView.passwordTextField {
+        if textField == rootView.passwordTextField {
             if let text = textField.text, text.isEmpty {
-                loginView.allDeleteButton.isHidden = true
-                loginView.togglePasswordButton.isHidden = true
+                rootView.allDeleteButton.isHidden = true
+                rootView.togglePasswordButton.isHidden = true
             } else {
-                loginView.allDeleteButton.isHidden = false
-                loginView.togglePasswordButton.isHidden = false
+                rootView.allDeleteButton.isHidden = false
+                rootView.togglePasswordButton.isHidden = false
             }
         }
     }

@@ -34,13 +34,7 @@ final class NickNameBottomSheetVC: UIViewController {
         $0.addLeftPadding(width: 25)
     }
     
-    private lazy var saveButton = UIButton().then {
-        $0.setTitle("저장하기", for: .normal)
-        $0.titleLabel?.font = .pretendardFont(weight: 600, size: 14)
-        $0.backgroundColor = .gray
-        $0.layer.cornerRadius = 12
-        $0.isEnabled = false
-        $0.setTitleColor(.white, for: .selected)
+    private lazy var saveButton = ButtonFactory.tvingButtonFactory(title: "저장하기", backgroundColor: .gray).then {
         $0.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
     }
     
@@ -89,13 +83,13 @@ final class NickNameBottomSheetVC: UIViewController {
         
         nicknameTextField.snp.makeConstraints {
             $0.top.equalTo(nickName.snp.bottom).offset(21)
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.horizontalEdges.equalToSuperview().inset(20)
             $0.height.equalTo(52)
         }
         
         saveButton.snp.makeConstraints {
             $0.bottom.equalToSuperview().inset(30)
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.horizontalEdges.equalToSuperview().inset(20)
             $0.height.equalTo(52)
         }
     }
