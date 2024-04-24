@@ -7,6 +7,8 @@
 
 import UIKit
 
+import Then
+
 enum HomeSection: Int, CaseIterable {
     case main = 0
     case required
@@ -52,9 +54,11 @@ final class HomeViewController: UIViewController {
     ]
     
     // MARK: - UI Components
+    
     private let homeView = HomeView()
     
     // MARK: - Life Cycles
+    
     override func loadView() {
         self.view = homeView
     }
@@ -64,11 +68,9 @@ final class HomeViewController: UIViewController {
         
         setDelegate()
         setRegister()
-        
-        self.navigationController?.isNavigationBarHidden = true
     }
     
-    // MARK: - Setup Methods
+    // MARK: - Methods
     
     private func setDelegate() {
         homeView.homeCollectionView.delegate = self
@@ -139,6 +141,9 @@ extension HomeViewController: UICollectionViewDataSource {
         return headerView
     }
 }
+
+
+
 
 // MARK: - UICollectionViewDelegate
 extension HomeViewController: UICollectionViewDelegate {

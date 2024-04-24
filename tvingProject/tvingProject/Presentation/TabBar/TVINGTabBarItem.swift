@@ -55,7 +55,7 @@ enum TVINGTabBarItem {
     var viewController: UIViewController {
         switch self {
         case .home:
-            return HomeViewController()
+            return CenterViewController()
         case .toBeReleased, .search, .record:
             return ViewController()
         }
