@@ -16,9 +16,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         self.window = UIWindow(windowScene: windowScene)
 
-        let navigationController = UINavigationController(rootViewController: LoginViewController())
+//        let navigationController = UINavigationController(rootViewController: TVINGTabBarController())
 //        let navigationController = UINavigationController(rootViewController: WelcomeViewController())
-        self.window?.rootViewController = navigationController
+        self.window?.rootViewController = TVINGTabBarController()
         self.window?.makeKeyAndVisible()
     }
 }

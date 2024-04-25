@@ -41,6 +41,7 @@ final class HomeViewController: UIViewController {
     
     
     // MARK: - Property
+    weak var scrollDelegate: HomeViewScrollDelegate?
     
     private let titleLists: [String] = ["티빙에서 꼭 봐야하는 컨텐츠", "인기 LIVE 채널", "1화 무료! 파라마운트+ 인기 시리즈", "마술보다 더 신비로운 영화(신비로운 영화사전님)"]
     
@@ -139,6 +140,10 @@ extension HomeViewController: UICollectionViewDataSource {
         }
         
         return headerView
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollDelegate?.homeViewDidScroll(yOffset: scrollView.contentOffset.y)
     }
 }
 

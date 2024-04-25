@@ -10,17 +10,22 @@ import UIKit
 import SnapKit
 import Then
 
+protocol HomeViewScrollDelegate: AnyObject {
+    func homeViewDidScroll(yOffset: CGFloat)
+}
+
 final class CenterViewController: UIViewController {
     
     private let segmentsItem = ["홈", "실시간", "TV프로그램", "영화", "파라마운트+"]
     
-    lazy var segmentedControl: UISegmentedControl = {
+    private lazy var segmentedControl: UISegmentedControl = {
         let segmentedControl = UnderlineSegmentedControl(items: segmentsItem)
         return segmentedControl
     }()
     
-    private let vc1: UIViewController = {
+    private lazy var vc1: UIViewController = {
         let vc = HomeViewController()
+        vc.scrollDelegate = self
         return vc
     }()
     
@@ -48,23 +53,27 @@ final class CenterViewController: UIViewController {
         return vc
     }()
     
+    // 큰 pageViewController 설정
     private lazy var pageViewController: UIPageViewController = {
         let vc = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         vc.setViewControllers([self.dataViewControllers[0]], direction: .forward, animated: true)
-        vc.delegate = self
-        vc.dataSource = self
         return vc
     }()
     
+    // 페이지 뷰컨에 담아 있는 ViewController 설정
     var dataViewControllers: [UIViewController] {
         [self.vc1, self.vc2, self.vc3, self.vc4, self.vc5]
     }
     
     var currentPage: Int = 0 {
         didSet {
-            // from segmentedControl -> pageViewController 업데이트
+            // 인덱스 1 -> 2 이동 또는 반대 4 -> 3 이동
             print(oldValue, self.currentPage)
+            
+            // 1(oldValue) -> 2 이동 할때는 forword, 4(oldValue) -> 3 이동 할때는 reverse
             let direction: UIPageViewController.NavigationDirection = oldValue <= self.currentPage ? .forward : .reverse
+            
+            // 현재 페이지 뷰컨을 currentPage에 따라 그 ViewController로 이동
             self.pageViewController.setViewControllers(
                 [dataViewControllers[self.currentPage]],
                 direction: direction,
@@ -76,9 +85,11 @@ final class CenterViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setHierarchy()
         setLayout()
+        setDelegate()
+        
         
     }
     
@@ -122,8 +133,13 @@ final class CenterViewController: UIViewController {
         self.changeValue(control: self.segmentedControl)
     }
     
+    private func setDelegate() {
+        pageViewController.delegate = self
+        pageViewController.dataSource = self
+    }
+    
     @objc private func changeValue(control: UISegmentedControl) {
-        // 코드로 값을 변경하면 해당 메소드 호출 x
+        // currentPage 의 값을 selectedSegmentIndex에 의해 변경되는걸 observing
         self.currentPage = control.selectedSegmentIndex
     }
 }
@@ -133,12 +149,12 @@ extension CenterViewController: UIPageViewControllerDataSource, UIPageViewContro
         guard let index = dataViewControllers.firstIndex(of: viewController), index - 1 >= 0 else { return nil }
         return dataViewControllers[index - 1]
     }
-
+    
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         guard let index = dataViewControllers.firstIndex(of: viewController), index + 1 < dataViewControllers.count else { return nil }
         return dataViewControllers[index + 1]
     }
-
+    
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         if completed, let viewController = pageViewController.viewControllers?.first, let index = dataViewControllers.firstIndex(of: viewController) {
             currentPage = index
@@ -147,16 +163,56 @@ extension CenterViewController: UIPageViewControllerDataSource, UIPageViewContro
     }
 }
 
+extension CenterViewController: HomeViewScrollDelegate {
+    
+    func homeViewDidScroll(yOffset: CGFloat) {
+        let segmentedControlHeight = 50
+        // segmentedControl의 기준 위치 설정
+        let safeAreaTop = view.safeAreaInsets.top
+        let initialSegmentedControlTop = safeAreaTop + 20
+        
+        // 스크롤 위치에 따른 처리
+        if yOffset >= initialSegmentedControlTop - safeAreaTop {
+            // 스크롤이 segmentedControl을 상단에 도달하거나 그 이상으로 올라갔을 때
+            if segmentedControl.superview != view {
+                // segmentedControl이 상단에 고정되도록 조정
+                segmentedControl.removeFromSuperview()
+                view.addSubview(segmentedControl)
+                
+                self.segmentedControl.snp.remakeConstraints {
+                    $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+                    $0.leading.trailing.equalTo(self.view.safeAreaLayoutGuide)
+                    $0.height.equalTo(segmentedControlHeight)
+                }
+            }
+        } else {
+            // 스크롤이 아래로 내려가 segmentedControl이 원래 위치로 돌아갈 때
+            if segmentedControl.superview != pageViewController.view {
+                segmentedControl.removeFromSuperview()
+                pageViewController.view.addSubview(segmentedControl)
+                
+                self.segmentedControl.snp.remakeConstraints {
+                    $0.horizontalEdges.equalToSuperview()
+                    $0.top.equalTo(self.pageViewController.view.safeAreaLayoutGuide.snp.top).offset(44)
+                    $0.height.equalTo(segmentedControlHeight)
+                }
+            }
+        }
+    }
+}
+
+
 
 final class UnderlineSegmentedControl: UISegmentedControl {
-
+    
+    // segment 와 같이 움직일 underLine 생성
     private lazy var underlineView: UIView = {
         let view = UIView()
-        view.backgroundColor = .white // Underline color
+        view.backgroundColor = .white
         addSubview(view)
         return view
     }()
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
@@ -183,7 +239,7 @@ final class UnderlineSegmentedControl: UISegmentedControl {
         setBackgroundImage(clearImage, for: .highlighted, barMetrics: .default)
         setDividerImage(clearImage, forLeftSegmentState: .selected, rightSegmentState: .normal, barMetrics: .default)
     }
-
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         updateUnderlineViewPosition()
@@ -197,7 +253,7 @@ final class UnderlineSegmentedControl: UISegmentedControl {
             let segmentWidth = self.bounds.width / CGFloat(numberOfSegments)
             let adjustment = getAdjustment(for: segmentIndex)
             let textStartX = (segmentWidth * CGFloat(segmentIndex)) + (segmentWidth - textWidth) / 2 - adjustment
-
+            
             UIView.animate(withDuration: 0.25) {
                 self.underlineView.frame = CGRect(x: textStartX, y: self.bounds.height - 3.0, width: textWidth, height: 3.0)
             }
@@ -208,9 +264,9 @@ final class UnderlineSegmentedControl: UISegmentedControl {
         // 각 세그먼트에 대한 조정값 설정
         switch index {
         case 0: return 20 // 홈
-        case 1: return 42 // 실시간
-        case 2: return 28 // TV프로그램
-        case 3: return 24 // 영화
+        case 1: return 44 // 실시간
+        case 2: return 30 // TV프로그램
+        case 3: return 25 // 영화
         case 4: return 20 // 파라마운트+
         default: return 0
         }
