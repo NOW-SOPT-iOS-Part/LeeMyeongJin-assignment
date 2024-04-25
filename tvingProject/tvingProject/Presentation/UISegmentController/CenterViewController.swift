@@ -16,7 +16,35 @@ protocol HomeViewScrollDelegate: AnyObject {
 
 final class CenterViewController: UIViewController {
     
+    
+    // MARK: - Properties
+    
     private let segmentsItem = ["홈", "실시간", "TV프로그램", "영화", "파라마운트+"]
+    
+    // 페이지 뷰컨에 담아 있는 ViewController 설정
+    private var dataViewControllers: [UIViewController] {
+        [self.vc1, self.vc2, self.vc3, self.vc4, self.vc5]
+    }
+    
+    var currentPage: Int = 0 {
+        didSet {
+            // 인덱스 1 -> 2 이동 또는 반대 4 -> 3 이동
+            print(oldValue, self.currentPage)
+            
+            // 1(oldValue) -> 2 이동 할때는 forword, 4(oldValue) -> 3 이동 할때는 reverse
+            let direction: UIPageViewController.NavigationDirection = oldValue <= self.currentPage ? .forward : .reverse
+            
+            // 현재 페이지 뷰컨을 currentPage에 따라 그 ViewController로 이동
+            self.pageViewController.setViewControllers(
+                [dataViewControllers[self.currentPage]],
+                direction: direction,
+                animated: true,
+                completion: nil
+            )
+        }
+    }
+    
+    // MARK: - UIComponents
     
     private lazy var segmentedControl: UISegmentedControl = {
         let segmentedControl = UnderlineSegmentedControl(items: segmentsItem)
@@ -60,41 +88,43 @@ final class CenterViewController: UIViewController {
         return vc
     }()
     
-    // 페이지 뷰컨에 담아 있는 ViewController 설정
-    var dataViewControllers: [UIViewController] {
-        [self.vc1, self.vc2, self.vc3, self.vc4, self.vc5]
-    }
     
-    var currentPage: Int = 0 {
-        didSet {
-            // 인덱스 1 -> 2 이동 또는 반대 4 -> 3 이동
-            print(oldValue, self.currentPage)
-            
-            // 1(oldValue) -> 2 이동 할때는 forword, 4(oldValue) -> 3 이동 할때는 reverse
-            let direction: UIPageViewController.NavigationDirection = oldValue <= self.currentPage ? .forward : .reverse
-            
-            // 현재 페이지 뷰컨을 currentPage에 따라 그 ViewController로 이동
-            self.pageViewController.setViewControllers(
-                [dataViewControllers[self.currentPage]],
-                direction: direction,
-                animated: true,
-                completion: nil
-            )
-        }
-    }
+    // MARK: - Life Cycles
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setUI()
         setHierarchy()
         setLayout()
         setDelegate()
+        setAddTarget()
+    }
+    
+    
+    // MARK: - Methods
+    
+    private func setUI() {
+        self.segmentedControl.setTitleTextAttributes(
+            [
+                NSAttributedString.Key.foregroundColor: UIColor.white,
+                .font: UIFont.pretendardFont(weight: 400, size: 15)
+            ],
+            for: .normal
+        )
         
+        self.segmentedControl.setTitleTextAttributes(
+            [
+                NSAttributedString.Key.foregroundColor: UIColor.white,
+                .font: UIFont.pretendardFont(weight: 600, size: 15)
+            ],
+            for: .selected
+        )
         
+        self.segmentedControl.selectedSegmentIndex = 0
     }
     
     private func setHierarchy() {
-        
         self.view.addSubview(pageViewController.view)
         pageViewController.view.addSubview(segmentedControl)
     }
@@ -112,30 +142,15 @@ final class CenterViewController: UIViewController {
             $0.bottom.equalTo(self.view.snp.bottom).offset(-4)
             $0.top.equalToSuperview()
         }
-        
-        self.segmentedControl.setTitleTextAttributes(
-            [
-                NSAttributedString.Key.foregroundColor: UIColor.white,
-                .font: UIFont.pretendardFont(weight: 400, size: 15)
-            ],
-            for: .normal
-        )
-        
-        self.segmentedControl.setTitleTextAttributes(
-            [
-                NSAttributedString.Key.foregroundColor: UIColor.white,
-                .font: UIFont.pretendardFont(weight: 600, size: 15)
-            ],
-            for: .selected
-        )
+    }
+    
+    private func setAddTarget() {
         self.segmentedControl.addTarget(self, action: #selector(changeValue(control:)), for: .valueChanged)
-        self.segmentedControl.selectedSegmentIndex = 0
-        self.changeValue(control: self.segmentedControl)
     }
     
     private func setDelegate() {
-        pageViewController.delegate = self
-        pageViewController.dataSource = self
+        self.pageViewController.delegate = self
+        self.pageViewController.dataSource = self
     }
     
     @objc private func changeValue(control: UISegmentedControl) {
@@ -144,17 +159,11 @@ final class CenterViewController: UIViewController {
     }
 }
 
-extension CenterViewController: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        guard let index = dataViewControllers.firstIndex(of: viewController), index - 1 >= 0 else { return nil }
-        return dataViewControllers[index - 1]
-    }
-    
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        guard let index = dataViewControllers.firstIndex(of: viewController), index + 1 < dataViewControllers.count else { return nil }
-        return dataViewControllers[index + 1]
-    }
-    
+
+// MARK: - UIPageViewControllerDelegate
+
+extension CenterViewController: UIPageViewControllerDelegate {
+    // 사용자의 제스처로 뷰가 이동할때 호출
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         if completed, let viewController = pageViewController.viewControllers?.first, let index = dataViewControllers.firstIndex(of: viewController) {
             currentPage = index
@@ -162,6 +171,24 @@ extension CenterViewController: UIPageViewControllerDataSource, UIPageViewContro
         }
     }
 }
+
+// MARK: - UIPageViewControllerDataSource
+
+extension CenterViewController: UIPageViewControllerDataSource {
+    // 0 번 인덱스 page 빼고는 모두 왼쪽 제스처 가능
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+        guard let index = dataViewControllers.firstIndex(of: viewController), index - 1 >= 0 else { return nil }
+        return dataViewControllers[index - 1]
+    }
+    
+    // 마지막 인덱스 page 빼고는 모두 오른쪽 제스처 가능
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        guard let index = dataViewControllers.firstIndex(of: viewController), index + 1 < dataViewControllers.count else { return nil }
+        return dataViewControllers[index + 1]
+    }
+}
+
+// MARK: - HomeViewScrollDelegate
 
 extension CenterViewController: HomeViewScrollDelegate {
     
@@ -197,78 +224,6 @@ extension CenterViewController: HomeViewScrollDelegate {
                     $0.height.equalTo(segmentedControlHeight)
                 }
             }
-        }
-    }
-}
-
-
-
-final class UnderlineSegmentedControl: UISegmentedControl {
-    
-    // segment 와 같이 움직일 underLine 생성
-    private lazy var underlineView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        addSubview(view)
-        return view
-    }()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        commonInit()
-    }
-    
-    override init(items: [Any]?) {
-        super.init(items: items)
-        commonInit()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func commonInit() {
-        self.removeBackgroundAndDivider()
-        self.apportionsSegmentWidthsByContent = true
-    }
-    
-    private func removeBackgroundAndDivider() {
-        let clearImage = UIImage()
-        setBackgroundImage(clearImage, for: .normal, barMetrics: .default)
-        setBackgroundImage(clearImage, for: .selected, barMetrics: .default)
-        setBackgroundImage(clearImage, for: .highlighted, barMetrics: .default)
-        setDividerImage(clearImage, forLeftSegmentState: .selected, rightSegmentState: .normal, barMetrics: .default)
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        updateUnderlineViewPosition()
-    }
-    
-    private func updateUnderlineViewPosition() {
-        let segmentIndex = selectedSegmentIndex
-        if let titleLabel = self.titleForSegment(at: segmentIndex) {
-            let attributes: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: 15)]
-            let textWidth = titleLabel.size(withAttributes: attributes).width
-            let segmentWidth = self.bounds.width / CGFloat(numberOfSegments)
-            let adjustment = getAdjustment(for: segmentIndex)
-            let textStartX = (segmentWidth * CGFloat(segmentIndex)) + (segmentWidth - textWidth) / 2 - adjustment
-            
-            UIView.animate(withDuration: 0.25) {
-                self.underlineView.frame = CGRect(x: textStartX, y: self.bounds.height - 3.0, width: textWidth, height: 3.0)
-            }
-        }
-    }
-    
-    private func getAdjustment(for index: Int) -> CGFloat {
-        // 각 세그먼트에 대한 조정값 설정
-        switch index {
-        case 0: return 20 // 홈
-        case 1: return 44 // 실시간
-        case 2: return 30 // TV프로그램
-        case 3: return 25 // 영화
-        case 4: return 20 // 파라마운트+
-        default: return 0
         }
     }
 }

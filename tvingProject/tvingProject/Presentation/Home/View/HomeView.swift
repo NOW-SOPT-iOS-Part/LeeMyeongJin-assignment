@@ -14,7 +14,7 @@ final class HomeView: UIView {
     
     // MARK: - UIComponents
     
-    private let homeTopView = HomeTopView()
+    private let homeTopView = HomeLogoView()
     
     lazy var homeCollectionView: UICollectionView = {
         let layout = CompositionalLayout.createLayout()
@@ -22,7 +22,6 @@ final class HomeView: UIView {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
         collectionView.isScrollEnabled = true
-        collectionView.showsVerticalScrollIndicator = false
         return collectionView
     }()
     
@@ -30,6 +29,7 @@ final class HomeView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         setUI()
         setHierarchy()
         setLayout()
@@ -46,11 +46,9 @@ final class HomeView: UIView {
     }
     
     private func setHierarchy() {
-        addSubview(homeCollectionView)
+        addSubview(self.homeCollectionView)
         
-        homeCollectionView.addSubviews(
-            homeTopView
-        )
+        self.homeCollectionView.addSubview(self.homeTopView)
     }
     
     private func setLayout() {

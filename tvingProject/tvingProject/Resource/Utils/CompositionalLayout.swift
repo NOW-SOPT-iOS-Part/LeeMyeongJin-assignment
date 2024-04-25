@@ -103,7 +103,7 @@ struct CompositionalLayout {
                 
                 item.contentInsets.trailing = 8
                 
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .absolute(80)), subitems: [item])
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .absolute(58)), subitems: [item])
                 
                 
                 let section = NSCollectionLayoutSection(group: group)
