@@ -39,19 +39,24 @@ enum HomeSection: Int, CaseIterable {
 
 final class HomeViewController: UIViewController {
     
+    // MARK: - Properties
     
-    // MARK: - Property
     weak var scrollDelegate: HomeViewScrollDelegate?
     
-    private let titleLists: [String] = ["티빙에서 꼭 봐야하는 컨텐츠", "인기 LIVE 채널", "1화 무료! 파라마운트+ 인기 시리즈", "마술보다 더 신비로운 영화(신비로운 영화사전님)"]
+    private let titleLists: [String] = [
+        "티빙에서 꼭 봐야하는 컨텐츠",
+        "인기 LIVE 채널",
+        "1화 무료! 파라마운트+ 인기 시리즈",
+        "마술보다 더 신비로운 영화(신비로운 영화사전님)"
+    ]
     
     private let imagesBySection: [Int: [UIImage]] = [
-        0: [UIImage(resource: .mainImage1), UIImage(resource: .mainImage3), UIImage(resource: .mainImage2)],
-        1: [UIImage(resource: .mainImage2), UIImage(resource: .mainImage4), UIImage(resource: .mainImage5), UIImage(resource: .mainImage1), UIImage(resource: .mainImage1), UIImage(resource: .mainImage1), UIImage(resource: .mainImage1), UIImage(resource: .mainImage1)],
-        2: [UIImage(resource: .mainImage4), UIImage(resource: .mainImage3), UIImage(resource: .mainImage2), UIImage(resource: .mainImage1)],
-        3: [UIImage(resource: .mainImage4), UIImage(resource: .mainImage3), UIImage(resource: .mainImage2), UIImage(resource: .mainImage1)],
-        4: [UIImage(resource: .mainImage4), UIImage(resource: .mainImage3), UIImage(resource: .mainImage2), UIImage(resource: .mainImage1)],
-        5: [UIImage(resource: .mainImage4), UIImage(resource: .mainImage3), UIImage(resource: .mainImage2), UIImage(resource: .mainImage1)]
+        0: [UIImage(resource: .mainImage7), UIImage(resource: .mainImage8), UIImage(resource: .mainImage3)],
+        1: [UIImage(resource: .mainImage9), UIImage(resource: .mainImage4), UIImage(resource: .mainImage5), UIImage(resource: .mainImage1), UIImage(resource: .mainImage1), UIImage(resource: .mainImage1), UIImage(resource: .mainImage1), UIImage(resource: .mainImage1)],
+        2: [UIImage(resource: .imgLive1), UIImage(resource: .imgLive2), UIImage(resource: .imgLive1), UIImage(resource: .imgLive2)],
+        3: [UIImage(resource: .mainImage1), UIImage(resource: .mainImage3), UIImage(resource: .mainImage2), UIImage(resource: .mainImage7)],
+        4: [UIImage(resource: .imgAd1), UIImage(resource: .imgAd2), UIImage(resource: .mainImage2), UIImage(resource: .imgLive2)],
+        5: [UIImage(resource: .mainImage8), UIImage(resource: .mainImage3), UIImage(resource: .mainImage2), UIImage(resource: .mainImage1)]
     ]
     
     // MARK: - UI Components
@@ -91,6 +96,7 @@ final class HomeViewController: UIViewController {
 }
 
 // MARK: - UICollectionViewDataSource
+
 extension HomeViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return HomeSection.allCases.count
@@ -112,9 +118,9 @@ extension HomeViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath)
         
         // 이미지 바인딩
-         if let imageCell = cell as? ImageBindable, let sectionImages = imagesBySection[indexPath.section], indexPath.item < sectionImages.count {
-             imageCell.bindData(image: sectionImages[indexPath.item])
-         }
+        if let imageCell = cell as? ImageBindable, let sectionImages = imagesBySection[indexPath.section], indexPath.item < sectionImages.count {
+            imageCell.bindData(image: sectionImages[indexPath.item])
+        }
         
         return cell
     }
@@ -148,39 +154,8 @@ extension HomeViewController: UICollectionViewDataSource {
 }
 
 
-
-
 // MARK: - UICollectionViewDelegate
+
 extension HomeViewController: UICollectionViewDelegate {
     // Implement any specific delegate methods you might need
 }
-
-
-//// MARK: - Preview
-//
-//#if DEBUG
-//import SwiftUI
-//struct Preview: UIViewControllerRepresentable {
-//    
-//    func makeUIViewController(context: Context) -> UIViewController {
-//        // 이부분
-//        TVINGTabBarController()
-//        // 이거 보고싶은 현재 VC로 바꾸면됩니다.
-//    }
-//    
-//    func updateUIViewController(_ uiView: UIViewController, context: Context) {
-//        // leave this empty
-//    }
-//}
-//
-//struct ViewController_PreviewProvider: PreviewProvider {
-//    static var previews: some View {
-//        Group {
-//            Preview()
-//                .edgesIgnoringSafeArea(.all)
-//                .previewDisplayName("Preview")
-//                .previewDevice(PreviewDevice(rawValue: "iPhone 12 Pro"))
-//        }
-//    }
-//}
-//#endif

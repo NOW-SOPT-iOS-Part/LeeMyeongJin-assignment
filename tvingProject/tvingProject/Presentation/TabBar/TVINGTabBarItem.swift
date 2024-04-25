@@ -29,26 +29,26 @@ enum TVINGTabBarItem {
     var unSelectedImage: UIImage {
         switch self {
         case .home:
-            return UIImage(resource: .icEye)
+            return UIImage(systemName: "house")!
         case .toBeReleased:
-            return UIImage(resource: .icEye)
+            return UIImage(systemName: "video.square")!
         case .search:
-            return UIImage(resource: .icEye)
+            return UIImage(resource: .icSearch)
         case .record:
-            return UIImage(resource: .icEye)
+            return UIImage(systemName: "clock")!
         }
     }
     
     var selectedImage: UIImage {
         switch self {
         case .home:
-            return UIImage(resource: .icEye)
+            return UIImage(systemName: "house.fill")!
         case .toBeReleased:
-            return UIImage(resource: .icEye)
+            return UIImage(systemName: "video.square.fill")!
         case .search:
-            return UIImage(resource: .icEye)
+            return UIImage(resource: .icSearchFill)
         case .record:
-            return UIImage(resource: .icEye)
+            return UIImage(systemName: "clock.fill")!
         }
     }
     
