@@ -6,9 +6,11 @@
 //
 
 import UIKit
+import Combine
 
 struct CompositionalLayout {
-    static func createLayout() -> UICollectionViewCompositionalLayout {
+    
+    static func createLayout(currentBannerPage: PassthroughSubject<Int, Never>) -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (sectionNumber, env) -> NSCollectionLayoutSection? in
             
             if sectionNumber == 0 {
@@ -24,6 +26,22 @@ struct CompositionalLayout {
                 let section = NSCollectionLayoutSection(group: group)
                 
                 section.orthogonalScrollingBehavior = .paging
+                
+                section.visibleItemsInvalidationHandler = { (visibleItems, offset, env) in
+                    let currentPage = Int(max(0, round(offset.x / env.container.contentSize.width)))
+                    currentBannerPage.send(currentPage)
+                }
+                
+                // footer 추가
+                let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(20))
+                let footerSupplementary = NSCollectionLayoutBoundarySupplementaryItem(
+                    layoutSize: footerSize,
+                    elementKind: UICollectionView.elementKindSectionFooter,
+                    alignment: .bottomLeading,
+                    absoluteOffset: CGPoint(x: -140, y: 16)  // 여기에서 Y 값을 조정하여 위나 아래로 옮길 수 있습니다.
+                )
+                
+                section.boundarySupplementaryItems = [footerSupplementary]
                 
                 return section
                 
@@ -136,5 +154,5 @@ struct CompositionalLayout {
             }
         }
     }
-
+    
 }

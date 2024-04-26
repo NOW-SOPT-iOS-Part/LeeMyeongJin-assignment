@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 import Then
 
@@ -34,10 +35,11 @@ enum HomeSection: Int, CaseIterable {
             return MagicMovieCell.className
         }
     }
-    
 }
 
 final class HomeViewController: UIViewController {
+    
+    private var mainModelItems: [mainModel] = mainModel.getData()
     
     // MARK: - Properties
     
@@ -51,8 +53,8 @@ final class HomeViewController: UIViewController {
     ]
     
     private let imagesBySection: [Int: [UIImage]] = [
-        0: [UIImage(resource: .mainImage7), UIImage(resource: .mainImage8), UIImage(resource: .mainImage3)],
-        1: [UIImage(resource: .mainImage9), UIImage(resource: .mainImage4), UIImage(resource: .mainImage5), UIImage(resource: .mainImage1), UIImage(resource: .mainImage1), UIImage(resource: .mainImage1), UIImage(resource: .mainImage1), UIImage(resource: .mainImage1)],
+        0: [UIImage(resource: .mainImage7), UIImage(resource: .mainImage8), UIImage(resource: .mainImage3), UIImage(resource: .mainImage7), UIImage(resource: .mainImage8)],
+        1: [UIImage(resource: .mainImage9), UIImage(resource: .mainImage4), UIImage(resource: .thingjin), UIImage(resource: .mainImage5), UIImage(resource: .mainImage1), UIImage(resource: .mainImage1), UIImage(resource: .mainImage1), UIImage(resource: .mainImage1)],
         2: [UIImage(resource: .imgLive1), UIImage(resource: .imgLive2), UIImage(resource: .imgLive1), UIImage(resource: .imgLive2)],
         3: [UIImage(resource: .mainImage1), UIImage(resource: .mainImage3), UIImage(resource: .mainImage2), UIImage(resource: .mainImage7)],
         4: [UIImage(resource: .imgAd1), UIImage(resource: .imgAd2), UIImage(resource: .mainImage2), UIImage(resource: .imgLive2)],
@@ -92,6 +94,7 @@ final class HomeViewController: UIViewController {
         homeView.homeCollectionView.register(MagicMovieCell.self, forCellWithReuseIdentifier: MagicMovieCell.className)
         
         homeView.homeCollectionView.register(HomeViewHeaderViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HomeViewHeaderViewCell.className)
+        homeView.homeCollectionView.register(HomeViewFooterViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: HomeViewFooterViewCell.className)
     }
 }
 
@@ -104,7 +107,7 @@ extension HomeViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == 0 {
-            return 3
+            return 5
         } else if section == 1 {
             return 8
         } else {
@@ -114,39 +117,95 @@ extension HomeViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let section = HomeSection(rawValue: indexPath.section)!
-        let identifier = section.identifier
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath)
         
-        // 이미지 바인딩
-        if let imageCell = cell as? ImageBindable, let sectionImages = imagesBySection[indexPath.section], indexPath.item < sectionImages.count {
-            imageCell.bindData(image: sectionImages[indexPath.item])
+        switch section {
+        case .main:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainCell.className, for: indexPath) as! MainCell
+            let model = mainModelItems[indexPath.row]
+            cell.bindData(image: model.image, title: model.title, info: model.info)
+            return cell
+            
+        case .required:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RequiredContentsCell.className, for: indexPath) as! RequiredContentsCell
+            
+            if let item = imagesBySection[1] {
+                cell.bindData(image: item[indexPath.row])
+            }
+            return cell
+            
+        case .popular:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PopularLIVECell.className, for: indexPath) as! PopularLIVECell
+            
+            if let item = imagesBySection[2] {
+                cell.bindData(image: item[indexPath.row])
+            }
+            return cell
+            
+        case .paraMount:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ParaMountPlus.className, for: indexPath) as! ParaMountPlus
+            
+            if let item = imagesBySection[3] {
+                cell.bindData(image: item[indexPath.row])
+            }
+            return cell
+            
+        case .advertise:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AdvertiseCell.className, for: indexPath) as! AdvertiseCell
+            
+            if let item = imagesBySection[4] {
+                cell.bindData(image: item[indexPath.row])
+            }
+            return cell
+            
+        case .magicMovie:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MagicMovieCell.className, for: indexPath) as! MagicMovieCell
+            
+            if let item = imagesBySection[5] {
+                cell.bindData(image: item[indexPath.row])
+            }
+            return cell
         }
-        
-        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard kind == UICollectionView.elementKindSectionHeader,
-              let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HomeViewHeaderViewCell.className, for: indexPath) as? HomeViewHeaderViewCell else {
-            
+        
+        switch kind {
+        case UICollectionView.elementKindSectionHeader:
+            guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HomeViewHeaderViewCell.className, for: indexPath) as? HomeViewHeaderViewCell else {
+                return UICollectionReusableView()
+            }
+            let section = HomeSection(rawValue: indexPath.section)!
+            switch section {
+            case .required:
+                headerView.bindTitle(title: titleLists[0])
+            case .popular:
+                headerView.bindTitle(title: titleLists[1])
+            case .paraMount:
+                headerView.bindTitle(title: titleLists[2])
+            case .magicMovie:
+                headerView.bindTitle(title: titleLists[3])
+            default:
+                headerView.bindTitle(title: "")
+            }
+            return headerView
+        
+        case UICollectionView.elementKindSectionFooter:
+             guard let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HomeViewFooterViewCell.className, for: indexPath) as? HomeViewFooterViewCell else {
+                 return UICollectionReusableView()
+             }
+            let section = HomeSection(rawValue: indexPath.section)!
+            if section == .main {
+                footerView.bind(input: homeView.currentBannerPage, indexPath: indexPath, pageNumber: 5)
+                return footerView
+            }
+        default:
             return UICollectionReusableView()
         }
         
-        switch indexPath.section {
-        case 1:
-            headerView.bindTitle(title: titleLists[0])
-        case 2:
-            headerView.bindTitle(title: titleLists[1])
-        case 3:
-            headerView.bindTitle(title: titleLists[2])
-        case 5:
-            headerView.bindTitle(title: titleLists[3])
-        default:
-            headerView.bindTitle(title: "")
-        }
-        
-        return headerView
+        return UICollectionReusableView()
     }
+    
+    
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         scrollDelegate?.homeViewDidScroll(yOffset: scrollView.contentOffset.y)

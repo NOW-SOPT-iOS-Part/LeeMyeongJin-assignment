@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 import SnapKit
 import Then
@@ -16,8 +17,10 @@ final class HomeView: UIView {
     
     private let homeTopView = HomeLogoView()
     
+    var currentBannerPage = PassthroughSubject<Int, Never>()
+    
     lazy var homeCollectionView: UICollectionView = {
-        let layout = CompositionalLayout.createLayout()
+        let layout = CompositionalLayout.createLayout(currentBannerPage: currentBannerPage)
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
