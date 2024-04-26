@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class ParaMountPlus: UICollectionViewCell, ImageBindable {
+class ParaMountPlus: UICollectionViewCell {
     // MARK: - UIComponents
     
     private var mainImageView = UIImageView().then {
@@ -33,8 +33,6 @@ class ParaMountPlus: UICollectionViewCell, ImageBindable {
         $0.axis = .vertical
         $0.spacing = 4
     }
-    
-    
     
     // MARK: - Life Cycles
     
@@ -67,6 +65,8 @@ class ParaMountPlus: UICollectionViewCell, ImageBindable {
         }
         
     }
+    
+    // MARK: - Methods
     
     func bindData(image: UIImage) {
         self.mainImageView.image = image

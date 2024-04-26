@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class RequiredContentsCell: UICollectionViewCell, ImageBindable {
+class RequiredContentsCell: UICollectionViewCell {
     
     // MARK: - UIComponents
     
@@ -39,6 +39,8 @@ class RequiredContentsCell: UICollectionViewCell, ImageBindable {
             $0.edges.equalToSuperview()
         }
     }
+    
+    // MARK: - Methods
     
     func bindData(image: UIImage) {
         self.mainImageView.image = image
