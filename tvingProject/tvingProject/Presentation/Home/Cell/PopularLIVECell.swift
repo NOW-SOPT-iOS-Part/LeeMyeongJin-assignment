@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class PopularLIVECell: UICollectionViewCell, ImageBindable {
+class PopularLIVECell: UICollectionViewCell {
     
     // MARK: - UIComponents
     
@@ -93,6 +93,8 @@ class PopularLIVECell: UICollectionViewCell, ImageBindable {
             $0.leading.equalToSuperview().inset(24)
         }
     }
+    
+    // MARK: - Methods
     
     func bindData(image: UIImage) {
         self.mainImageView.image = image

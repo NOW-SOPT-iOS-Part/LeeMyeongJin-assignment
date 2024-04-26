@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MagicMovieCell: UICollectionViewCell, ImageBindable {
+class MagicMovieCell: UICollectionViewCell {
     
     // MARK: - UIComponents
     
@@ -35,8 +35,6 @@ class MagicMovieCell: UICollectionViewCell, ImageBindable {
         $0.font = .pretendardFont(weight: 700, size: 19)
     }
     
-    
-    
     // MARK: - Life Cycles
     
     override init(frame: CGRect) {
@@ -58,6 +56,8 @@ class MagicMovieCell: UICollectionViewCell, ImageBindable {
             $0.edges.equalToSuperview()
         }
     }
+    
+    // MARK: - Methods
     
     func bindData(image: UIImage) {
         self.mainImageView.image = image

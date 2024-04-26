@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AdvertiseCell: UICollectionViewCell, ImageBindable {
+class AdvertiseCell: UICollectionViewCell {
     // MARK: - UIComponents
     
     private var mainImageView = UIImageView().then {
@@ -34,8 +34,6 @@ class AdvertiseCell: UICollectionViewCell, ImageBindable {
         $0.font = .pretendardFont(weight: 700, size: 19)
     }
     
-    
-    
     // MARK: - Life Cycles
     
     override init(frame: CGRect) {
@@ -57,6 +55,8 @@ class AdvertiseCell: UICollectionViewCell, ImageBindable {
             $0.edges.equalToSuperview()
         }
     }
+    
+    // MARK: - Methods
     
     func bindData(image: UIImage) {
         self.mainImageView.image = image
