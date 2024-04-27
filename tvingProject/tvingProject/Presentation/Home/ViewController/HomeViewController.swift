@@ -39,19 +39,18 @@ enum HomeSection: Int, CaseIterable {
 
 final class HomeViewController: UIViewController {
     
-    private var mainModelItems: [mainModel] = mainModel.getData()
-    
     // MARK: - Properties
     
     weak var scrollDelegate: HomeViewScrollDelegate?
     
     private let titleLists: [String] = [
-        "티빙에서 꼭 봐야하는 컨텐츠",
+        "티빙에서 꼭 봐야하는 콘텐츠",
         "인기 LIVE 채널",
         "1화 무료! 파라마운트+ 인기 시리즈",
         "마술보다 더 신비로운 영화(신비로운 영화사전님)"
     ]
     
+    // dummyData 입니다.
     private let imagesBySection: [Int: [UIImage]] = [
         0: [UIImage(resource: .mainImage7), UIImage(resource: .mainImage8), UIImage(resource: .mainImage3), UIImage(resource: .mainImage7), UIImage(resource: .mainImage8)],
         1: [UIImage(resource: .mainImage9), UIImage(resource: .mainImage4), UIImage(resource: .thingjin), UIImage(resource: .mainImage5), UIImage(resource: .mainImage1), UIImage(resource: .mainImage1), UIImage(resource: .mainImage1), UIImage(resource: .mainImage1)],
@@ -60,6 +59,8 @@ final class HomeViewController: UIViewController {
         4: [UIImage(resource: .imgAd1), UIImage(resource: .imgAd2), UIImage(resource: .mainImage2), UIImage(resource: .imgLive2)],
         5: [UIImage(resource: .mainImage8), UIImage(resource: .mainImage3), UIImage(resource: .mainImage2), UIImage(resource: .mainImage1)]
     ]
+    
+    private var mainModelItems: [mainModel] = mainModel.getData()
     
     // MARK: - UI Components
     
@@ -106,9 +107,7 @@ extension HomeViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if section == 0 {
-            return 5
-        } else if section == 1 {
+        if section == 0 || section == 1 {
             return 8
         } else {
             return 4
@@ -188,14 +187,14 @@ extension HomeViewController: UICollectionViewDataSource {
                 headerView.bindTitle(title: "")
             }
             return headerView
-        
+            
         case UICollectionView.elementKindSectionFooter:
-             guard let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HomeViewFooterViewCell.className, for: indexPath) as? HomeViewFooterViewCell else {
-                 return UICollectionReusableView()
-             }
+            guard let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HomeViewFooterViewCell.className, for: indexPath) as? HomeViewFooterViewCell else {
+                return UICollectionReusableView()
+            }
             let section = HomeSection(rawValue: indexPath.section)!
             if section == .main {
-                footerView.bind(input: homeView.currentBannerPage, indexPath: indexPath, pageNumber: 5)
+                footerView.bind(input: homeView.currentBannerPage, indexPath: indexPath, pageNumber: 8)
                 return footerView
             }
         default:

@@ -13,10 +13,19 @@ final class ViewController: UIViewController {
     
     // MARK: - Life Cycles
     
+    init(_ backgroundColor: UIColor) {
+        super.init(nibName: nil, bundle: nil)
+        self.view.backgroundColor = backgroundColor
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setUI()
+//        setUI()
     }
     
     // MARK: - UI & Layout
