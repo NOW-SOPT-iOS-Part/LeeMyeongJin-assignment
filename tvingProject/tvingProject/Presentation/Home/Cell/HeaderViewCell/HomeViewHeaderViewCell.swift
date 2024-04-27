@@ -21,7 +21,7 @@ class HomeViewHeaderViewCell: UICollectionReusableView {
     
     private let viewAllLabel = UILabel().then {
         $0.text = "전체보기 >"
-        $0.font = .pretendardFont(weight: 500, size: 11)
+        $0.font = .pretendardFont(weight: 500, size: 12)
         $0.textColor = .white
     }
     

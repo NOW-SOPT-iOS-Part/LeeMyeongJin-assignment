@@ -33,7 +33,7 @@ enum TVINGTabBarItem {
         case .toBeReleased:
             return UIImage(systemName: "video.square")!
         case .search:
-            return UIImage(resource: .icSearch)
+            return .icSearch
         case .record:
             return UIImage(systemName: "clock")!
         }
@@ -46,7 +46,7 @@ enum TVINGTabBarItem {
         case .toBeReleased:
             return UIImage(systemName: "video.square.fill")!
         case .search:
-            return UIImage(resource: .icSearchFill)
+            return .icSearchFill
         case .record:
             return UIImage(systemName: "clock.fill")!
         }
@@ -56,8 +56,12 @@ enum TVINGTabBarItem {
         switch self {
         case .home:
             return CenterViewController()
-        case .toBeReleased, .search, .record:
-            return ViewController()
+        case .toBeReleased:
+            return ViewController(.blue)
+        case .search:
+            return ViewController(.tvingRed)
+        case .record:
+            return ViewController(.orange)
         }
     }
 }

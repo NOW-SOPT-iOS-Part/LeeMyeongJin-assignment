@@ -21,12 +21,12 @@ class MagicMovieCell: UICollectionViewCell {
     }
     
     private let title = UILabel().then {
-        $0.text = "1"
+        $0.text = "TestTitle"
         $0.font = .pretendardFont(weight: 700, size: 19)
     }
     
     private let episodes = UILabel().then {
-        $0.text = "1"
+        $0.text = "5"
         $0.font = .pretendardFont(weight: 700, size: 19)
     }
     

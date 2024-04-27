@@ -28,16 +28,31 @@ struct mainModel {
                 image: UIImage(resource: .mainImage3),
                 title: "시그널",
                 info: "조진웅 김혜수 이재훈 오지는 조합!"
-            ), 
-            mainModel(
-                image: UIImage(resource: .mainImage3),
-                title: "시그널",
-                info: "조진웅 김혜수 이재훈 오지는 조합!"
             ),
             mainModel(
                 image: UIImage(resource: .mainImage3),
                 title: "시그널",
-                info: "조진웅 김혜수 이재훈 오지는 조합!"
+                info: "조진웅 김혜수 이재훈 지리는 조합!"
+            ),
+            mainModel(
+                image: UIImage(resource: .mainImage3),
+                title: "시그널",
+                info: "조진웅 김혜수 이재훈 개쩌는 조합!"
+            ),
+            mainModel(
+                image: UIImage(resource: .mainImage8),
+                title: "마녀 사냥",
+                info: "신동엽의 19금 토크쇼 이제 시작."
+            ),
+            mainModel(
+                image: UIImage(resource: .mainImage8),
+                title: "마녀 사냥",
+                info: "신동엽의 19금 토크쇼 이제 시작."
+            ),
+            mainModel(
+                image: UIImage(resource: .mainImage8),
+                title: "마녀 사냥",
+                info: "신동엽의 19금 토크쇼 이제 시작."
             )
         ]
     }
