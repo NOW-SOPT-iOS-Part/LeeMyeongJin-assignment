@@ -10,27 +10,29 @@ import Combine
 import Foundation
 
 import SnapKit
+import Then
 
 final class HomeViewFooterViewCell: UICollectionReusableView {
     
-    // MARK: - Properties
-    private let bannerPageControl: UIPageControl = {
-        let pageControl = UIPageControl()
-        pageControl.pageIndicatorTintColor = .white
-        pageControl.currentPageIndicatorTintColor = .red
-        pageControl.currentPage = 0
-        pageControl.isUserInteractionEnabled = false
-        return pageControl
-    }()
+    // MARK: - UIComponents
     
-    private let cancelBag = CancelBag()
+    private let bannerPageControl = UIPageControl().then {
+        $0.pageIndicatorTintColor = .gray3
+        $0.currentPageIndicatorTintColor = .white
+        $0.currentPage = 0
+        $0.isUserInteractionEnabled = false
+    }
+    
+    private var cancelBag = CancelBag()
     
     // MARK: - Initializers
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setHierarchy()
         setLayout()
+        setPageControlSize(scale: 0.5)
     }
     
     required init?(coder: NSCoder) {
@@ -47,6 +49,10 @@ final class HomeViewFooterViewCell: UICollectionReusableView {
         }
     }
     
+    private func setPageControlSize(scale: CGFloat) {
+        bannerPageControl.transform = CGAffineTransform(scaleX: scale, y: scale)
+    }
+    
     // MARK: - Methods
     
     func bind(input: PassthroughSubject<Int, Never>, indexPath: IndexPath, pageNumber: Int) {
@@ -57,9 +63,9 @@ final class HomeViewFooterViewCell: UICollectionReusableView {
             input
                 .debounce(for: 0.15, scheduler: RunLoop.main)
                 .sink { [weak self] currentPage in
-                print(currentPage)
-                self?.bannerPageControl.currentPage = currentPage
-            }.store(in: cancelBag)
+                    print(currentPage)
+                    self?.bannerPageControl.currentPage = currentPage
+                }.store(in: cancelBag)
         }
     }
 }
