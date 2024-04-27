@@ -38,7 +38,7 @@ struct CompositionalLayout {
                     layoutSize: footerSize,
                     elementKind: UICollectionView.elementKindSectionFooter,
                     alignment: .bottomLeading,
-                    absoluteOffset: CGPoint(x: -140, y: 16)  // 여기에서 Y 값을 조정하여 위나 아래로 옮길 수 있습니다.
+                    absoluteOffset: CGPoint(x: -140, y: 8)  // 여기에서 Y 값을 조정하여 위나 아래로 옮길 수 있습니다.
                 )
                 
                 section.boundarySupplementaryItems = [footerSupplementary]
