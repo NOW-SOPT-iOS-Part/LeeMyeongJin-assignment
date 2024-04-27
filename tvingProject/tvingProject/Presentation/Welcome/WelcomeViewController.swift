@@ -50,7 +50,7 @@ final class WelcomeViewController: UIViewController {
         
         guard let window = self.view.window else { return }
         
-        let homeViewController = HomeViewController()
+        let homeViewController = TVINGTabBarController()
         window.rootViewController = homeViewController
         window.makeKeyAndVisible()
     }
