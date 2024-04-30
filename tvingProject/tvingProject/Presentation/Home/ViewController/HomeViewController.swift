@@ -17,24 +17,6 @@ enum HomeSection: Int, CaseIterable {
     case paraMount
     case advertise
     case magicMovie
-    
-    
-    var identifier: String {
-        switch self {
-        case .main:
-            return MainCell.className
-        case .required:
-            return RequiredContentsCell.className
-        case .popular:
-            return PopularLIVECell.className
-        case .paraMount:
-            return ParaMountPlus.className
-        case .advertise:
-            return AdvertiseCell.className
-        case .magicMovie:
-            return MagicMovieCell.className
-        }
-    }
 }
 
 final class HomeViewController: UIViewController {
