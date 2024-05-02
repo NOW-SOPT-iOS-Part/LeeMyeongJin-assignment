@@ -56,4 +56,23 @@ struct mainModel {
             )
         ]
     }
+    
+    static func getImageDatas() -> [Int: [UIImage]] {
+        return [
+            1: [UIImage(resource: .mainImage9), UIImage(resource: .mainImage4), UIImage(resource: .thingjin), UIImage(resource: .mainImage5), UIImage(resource: .mainImage1), UIImage(resource: .mainImage1), UIImage(resource: .mainImage1), UIImage(resource: .mainImage1)],
+            2: [UIImage(resource: .imgLive1), UIImage(resource: .imgLive2), UIImage(resource: .imgLive1), UIImage(resource: .imgLive2)],
+            3: [UIImage(resource: .mainImage1), UIImage(resource: .mainImage3), UIImage(resource: .mainImage2), UIImage(resource: .mainImage7)],
+            4: [UIImage(resource: .imgAd1), UIImage(resource: .imgAd2), UIImage(resource: .mainImage2), UIImage(resource: .imgLive2)],
+            5: [UIImage(resource: .mainImage8), UIImage(resource: .mainImage3), UIImage(resource: .mainImage2), UIImage(resource: .mainImage1)]
+        ]
+    }
+    
+    static func getTitleLists() -> [String] {
+        return [
+            "티빙에서 꼭 봐야하는 콘텐츠",
+            "인기 LIVE 채널",
+            "1화 무료! 파라마운트+ 인기 시리즈",
+            "마술보다 더 신비로운 영화(신비로운 영화사전님)"
+        ]
+    }
 }
