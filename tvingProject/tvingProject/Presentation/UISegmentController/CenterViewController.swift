@@ -194,31 +194,28 @@ extension CenterViewController: HomeViewScrollDelegate {
     
     func homeViewDidScroll(yOffset: CGFloat) {
         let segmentedControlHeight = 50
-        // segmentedControl의 기준 위치 설정
         let safeAreaTop = view.safeAreaInsets.top
         let initialSegmentedControlTop = safeAreaTop + 20
         
         // 스크롤 위치에 따른 처리
         if yOffset >= initialSegmentedControlTop - safeAreaTop {
             // 스크롤이 segmentedControl을 상단에 도달하거나 그 이상으로 올라갔을 때
-            if segmentedControl.superview != view {
-                // segmentedControl이 상단에 고정되도록 조정
-                segmentedControl.removeFromSuperview()
-                view.addSubview(segmentedControl)
+            if segmentedControl.superview != view { // 세그먼트의 뷰가 현재 CenterViewController 의 뷰가 아니라면
+                segmentedControl.removeFromSuperview() // 슈퍼 뷰에서 제거
+                view.addSubview(segmentedControl) // CenterViewController 뷰에 추가
                 
-                self.segmentedControl.snp.remakeConstraints {
+                self.segmentedControl.snp.remakeConstraints { // 제약 조건 다시 remake
                     $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
                     $0.leading.trailing.equalTo(self.view.safeAreaLayoutGuide)
                     $0.height.equalTo(segmentedControlHeight)
                 }
             }
         } else {
-            // 스크롤이 아래로 내려가 segmentedControl이 원래 위치로 돌아갈 때
-            if segmentedControl.superview != pageViewController.view {
-                segmentedControl.removeFromSuperview()
-                pageViewController.view.addSubview(segmentedControl)
+            if segmentedControl.superview != pageViewController.view { // 반대로 세그먼트 슈퍼 뷰가 페이지 뷰컨의 뷰가 아니라면
+                segmentedControl.removeFromSuperview() // 슈퍼 뷰 제거
+                pageViewController.view.addSubview(segmentedControl) // 페이지 뷰컨에 추가
                 
-                self.segmentedControl.snp.remakeConstraints {
+                self.segmentedControl.snp.remakeConstraints { // 다시 제약 조건 remake
                     $0.horizontalEdges.equalToSuperview()
                     $0.top.equalTo(self.pageViewController.view.safeAreaLayoutGuide.snp.top).offset(44)
                     $0.height.equalTo(segmentedControlHeight)
