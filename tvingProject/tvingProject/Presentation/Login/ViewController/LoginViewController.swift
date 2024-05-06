@@ -16,6 +16,9 @@ final class LoginViewController: UIViewController {
     
     var userNickName: String = ""
     
+    private var viewModel: LoginViewModel
+    private var cancelBag = CancelBag()
+    
     private var passwordVisibility: PasswordVisibility = .hidden
     
     // MARK: - UIComponents
@@ -23,6 +26,16 @@ final class LoginViewController: UIViewController {
     private let rootView = LoginView()
     
     // MARK: - Life Cycles
+    
+    init(viewModel: LoginViewModel) {
+        self.viewModel = viewModel
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func loadView() {
         self.view = rootView
@@ -33,6 +46,25 @@ final class LoginViewController: UIViewController {
         
         setDelegate()
         setAddTarget()
+        bind()
+    }
+    
+    
+    // MARK: - Bind
+    
+    private func bind() {
+        let input = LoginViewModel.Input(
+            loginTextField: rootView.idTextField.textPublisher,
+            passTextField: rootView.passwordTextField.textPublisher
+        )
+        
+        let output = viewModel.transform(from: input, cancelBag: cancelBag)
+        
+        output.validate
+            .print()
+            .receive(on: RunLoop.main)
+            .assign(to: \.isValid, on: rootView.loginButton)
+            .store(in: cancelBag)
     }
     
     // MARK: - @objc Function
@@ -63,7 +95,6 @@ final class LoginViewController: UIViewController {
         rootView.passwordTextField.isSecureTextEntry = (passwordVisibility == .hidden)
         rootView.togglePasswordButton.setImage(passwordVisibility.icon, for: .normal)
     }
-
     
     @objc
     private func deletePasswordTapped() {
@@ -80,26 +111,26 @@ final class LoginViewController: UIViewController {
         
         updateButtonStyle(button: rootView.loginButton, enabled: !isPasswordFieldEmpty)
     }
-    
-    private func validateAndToggleLoginButton() {
-        let isEmailValid = isValidEmail(rootView.idTextField.text)
-        let isPasswordValid = isValidPassword(rootView.passwordTextField.text)
-        let isFormValid = isEmailValid && isPasswordValid
-        
-        updateButtonStyle(button: rootView.loginButton, enabled: isFormValid)
-    }
-    
-    private func isValidEmail(_ string: String?) -> Bool {
-        guard let string = string else { return false }
-        
-        return string.range(of: self.emailRegex, options: .regularExpression) != nil
-    }
-    
-    private func isValidPassword(_ string: String?) -> Bool {
-        guard let string = string else { return false }
-        
-        return string.range(of: self.passwordRegex, options: .regularExpression) != nil
-    }
+//    
+//    private func validateAndToggleLoginButton() {
+//        let isEmailValid = isValidEmail(rootView.idTextField.text)
+//        let isPasswordValid = isValidPassword(rootView.passwordTextField.text)
+//        let isFormValid = isEmailValid && isPasswordValid
+//        
+//        updateButtonStyle(button: rootView.loginButton, enabled: isFormValid)
+//    }
+//    
+//    private func isValidEmail(_ string: String?) -> Bool {
+//        guard let string = string else { return false }
+//        
+//        return string.range(of: self.emailRegex, options: .regularExpression) != nil
+//    }
+//    
+//    private func isValidPassword(_ string: String?) -> Bool {
+//        guard let string = string else { return false }
+//        
+//        return string.range(of: self.passwordRegex, options: .regularExpression) != nil
+//    }
     
     private func updateButtonStyle(button: UIButton, enabled: Bool) {
         let style = enabled ? ButtonStyle.enabled : ButtonStyle.disabled
@@ -130,7 +161,7 @@ final class LoginViewController: UIViewController {
 extension LoginViewController: UITextFieldDelegate {
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
-        validateAndToggleLoginButton()
+        //        validateAndToggleLoginButton()
         
         if textField == rootView.passwordTextField {
             if let text = textField.text, text.isEmpty {
@@ -164,3 +195,16 @@ extension LoginViewController: LoginViewControllerProtocol {
     }
 }
 
+extension UIButton {
+    var isValid: Bool {
+        get {
+            backgroundColor == .black
+        }
+        
+        set {
+            setTitleColor(newValue ? .white: .gray2, for: .normal)
+            backgroundColor = newValue ? .tvingRed : .clear
+            isEnabled = newValue
+        }
+    }
+}
