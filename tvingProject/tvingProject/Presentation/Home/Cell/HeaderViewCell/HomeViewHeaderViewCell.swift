@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class HomeViewHeaderViewCell: UICollectionReusableView {
+final class HomeViewHeaderViewCell: UICollectionReusableView {
     // MARK: - UIComponents
     
     private let titleLabel = UILabel().then {

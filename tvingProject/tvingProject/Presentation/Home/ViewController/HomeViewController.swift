@@ -35,9 +35,9 @@ final class HomeViewController: UIViewController {
     weak var scrollDelegate: HomeViewScrollDelegate?
     
     // dummyDatas
-    private let titleLists: [String] = mainModel.getTitleLists()
-    private let imagesBySection: [Int: [UIImage]] = mainModel.getImageDatas()
-    private let mainModelItems: [mainModel] = mainModel.getData()
+    private let titleLists: [String] = MainModel.getTitleLists()
+    private let imagesBySection: [Int: [UIImage]] = MainModel.getImageDatas()
+    private let mainModelItems: [MainModel] = MainModel.getData()
     
     // MARK: - UI Components
     

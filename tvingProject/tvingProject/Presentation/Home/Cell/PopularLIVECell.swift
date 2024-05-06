@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class PopularLIVECell: UICollectionViewCell {
+final class PopularLIVECell: UICollectionViewCell {
     
     // MARK: - UIComponents
     
@@ -42,7 +42,7 @@ class PopularLIVECell: UICollectionViewCell {
         $0.textColor = .white
     }
     
-    private lazy var vStackView = UIStackView(
+    private lazy var popularLIVEChannelVStackView = UIStackView(
         arrangedSubviews: [
             title,
             episodes,
@@ -70,10 +70,10 @@ class PopularLIVECell: UICollectionViewCell {
     }
     
     private func setHierarchy() {
-        addSubviews(
+        contentView.addSubviews(
             mainImageView,
             rankingLabel,
-            vStackView
+            popularLIVEChannelVStackView
         )
     }
     
@@ -88,7 +88,7 @@ class PopularLIVECell: UICollectionViewCell {
             $0.leading.equalToSuperview().inset(8)
         }
         
-        vStackView.snp.makeConstraints {
+        popularLIVEChannelVStackView.snp.makeConstraints {
             $0.top.equalTo(mainImageView.snp.bottom).offset(12)
             $0.leading.equalToSuperview().inset(24)
         }

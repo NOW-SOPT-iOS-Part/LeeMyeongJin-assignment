@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class ParaMountPlus: UICollectionViewCell {
+final class ParaMountPlus: UICollectionViewCell {
     // MARK: - UIComponents
     
     private var mainImageView = UIImageView().then {
@@ -24,7 +24,7 @@ class ParaMountPlus: UICollectionViewCell {
         $0.textColor = .white
     }
     
-    private lazy var vStackView = UIStackView(
+    private lazy var paraMountVStackView = UIStackView(
         arrangedSubviews: [
             mainImageView,
             title
@@ -38,6 +38,7 @@ class ParaMountPlus: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         setHierarchy()
         setLayout()
     }
@@ -47,13 +48,12 @@ class ParaMountPlus: UICollectionViewCell {
     }
     
     private func setHierarchy() {
-        addSubview(vStackView)
+        contentView.addSubview(paraMountVStackView)
     }
     
     private func setLayout() {
-        vStackView.snp.makeConstraints {
+        paraMountVStackView.snp.makeConstraints {
             $0.top.horizontalEdges.equalToSuperview()
-            $0.height.equalTo(146 + 4 + 16)
         }
         
         mainImageView.snp.makeConstraints {

@@ -22,7 +22,7 @@ final class HomeLogoView: UIView {
         $0.image = UIImage(resource: .imgProfile)
     }
     
-    private lazy var HStackView = UIStackView(
+    private lazy var logoHStackView = UIStackView(
         arrangedSubviews: [
             LogoIcon,
             profileImage
@@ -54,11 +54,11 @@ final class HomeLogoView: UIView {
     }
     
     private func setHierarchy() {
-        addSubview(HStackView)
+        addSubview(logoHStackView)
     }
     
     private func setLayout() {
-        HStackView.snp.makeConstraints {
+        logoHStackView.snp.makeConstraints {
             $0.top.equalTo(safeAreaLayoutGuide)
             $0.horizontalEdges.equalToSuperview().inset(12)
         }

@@ -11,7 +11,7 @@ import Combine
 struct CompositionalLayout {
     
     static func createLayout(currentBannerPage: PassthroughSubject<Int, Never>) -> UICollectionViewCompositionalLayout {
-        return UICollectionViewCompositionalLayout { (sectionNumber, env) -> NSCollectionLayoutSection? in
+        return UICollectionViewCompositionalLayout { (sectionNumber, _) -> NSCollectionLayoutSection? in
             
             if sectionNumber == 0 {
                 let item = NSCollectionLayoutItem(
@@ -21,7 +21,10 @@ struct CompositionalLayout {
                     )
                 )
                 
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .absolute(498)), subitems: [item])
+                let group = NSCollectionLayoutGroup.horizontal(
+                    layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .absolute(498)),
+                    subitems: [item]
+                )
                 
                 let section = NSCollectionLayoutSection(group: group)
                 
@@ -56,14 +59,27 @@ struct CompositionalLayout {
                 
                 item.contentInsets.leading = 8
                 
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(0.3), heightDimension: .absolute(146)), subitems: [item])
+                let group = NSCollectionLayoutGroup.horizontal(
+                    layoutSize: .init(
+                        widthDimension: .fractionalWidth(0.3),
+                        heightDimension: .absolute(146)
+                    ),
+                    subitems: [item]
+                )
                 
                 let section = NSCollectionLayoutSection(group: group)
                 
                 section.orthogonalScrollingBehavior = .continuous
                 
-                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(60))
-                let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+                let headerSize = NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1.0),
+                    heightDimension: .estimated(60)
+                )
+                let header = NSCollectionLayoutBoundarySupplementaryItem(
+                    layoutSize: headerSize,
+                    elementKind: UICollectionView.elementKindSectionHeader,
+                    alignment: .top
+                )
                 section.boundarySupplementaryItems = [header]
                 
                 return section
@@ -77,7 +93,10 @@ struct CompositionalLayout {
                 
                 item.contentInsets.trailing = 8
                 
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(0.9), heightDimension: .absolute(140)), subitems: [item])
+                let group = NSCollectionLayoutGroup.horizontal(
+                    layoutSize: .init(widthDimension: .fractionalWidth(0.9), heightDimension: .absolute(140)),
+                    subitems: [item]
+                )
                 
                 
                 let section = NSCollectionLayoutSection(group: group)
@@ -99,7 +118,10 @@ struct CompositionalLayout {
                 
                 item.contentInsets.leading = 8
                 
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(0.3), heightDimension: .absolute(164)), subitems: [item])
+                let group = NSCollectionLayoutGroup.horizontal(
+                    layoutSize: .init(widthDimension: .fractionalWidth(0.3), heightDimension: .absolute(164)),
+                    subitems: [item]
+                )
                 
                 let section = NSCollectionLayoutSection(group: group)
                 
@@ -121,7 +143,10 @@ struct CompositionalLayout {
                 
                 item.contentInsets.trailing = 8
                 
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .absolute(58)), subitems: [item])
+                let group = NSCollectionLayoutGroup.horizontal(
+                    layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .absolute(58)),
+                    subitems: [item]
+                )
                 
                 
                 let section = NSCollectionLayoutSection(group: group)
@@ -140,7 +165,10 @@ struct CompositionalLayout {
                 )
                 item.contentInsets.bottom = 44
                 
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .absolute(498)), subitems: [item])
+                let group = NSCollectionLayoutGroup.horizontal(
+                    layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .absolute(498)),
+                    subitems: [item]
+                )
                 
                 let section = NSCollectionLayoutSection(group: group)
                 

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MagicMovieCell: UICollectionViewCell {
+final class MagicMovieCell: UICollectionViewCell {
     
     // MARK: - UIComponents
     
@@ -15,30 +15,11 @@ class MagicMovieCell: UICollectionViewCell {
         $0.image = UIImage(resource: .mainImage1)
     }
     
-    private let rankingLabel = UILabel().then {
-        $0.text = "1"
-        $0.font = .pretendardFont(weight: 700, size: 19)
-    }
-    
-    private let title = UILabel().then {
-        $0.text = "TestTitle"
-        $0.font = .pretendardFont(weight: 700, size: 19)
-    }
-    
-    private let episodes = UILabel().then {
-        $0.text = "5"
-        $0.font = .pretendardFont(weight: 700, size: 19)
-    }
-    
-    private let viewerShipRatings = UILabel().then {
-        $0.text = "1"
-        $0.font = .pretendardFont(weight: 700, size: 19)
-    }
-    
     // MARK: - Life Cycles
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         setHierarchy()
         setLayout()
     }
@@ -48,7 +29,7 @@ class MagicMovieCell: UICollectionViewCell {
     }
     
     private func setHierarchy() {
-        addSubview(mainImageView)
+        contentView.addSubview(mainImageView)
     }
     
     private func setLayout() {
