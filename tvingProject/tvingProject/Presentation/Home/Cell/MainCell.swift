@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class MainCell: UICollectionViewCell {
+final class MainCell: UICollectionViewCell {
     
     // MARK: - UIComponents
     
@@ -30,7 +30,7 @@ class MainCell: UICollectionViewCell {
         $0.textAlignment = .left
     }
     
-    private lazy var vStackView = UIStackView(
+    private lazy var mainBannerVStackView = UIStackView(
         arrangedSubviews: [
             imageTitle,
             imageInfo
@@ -46,6 +46,7 @@ class MainCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         setHierarchy()
         setLayout()
     }
@@ -55,8 +56,8 @@ class MainCell: UICollectionViewCell {
     }
     
     private func setHierarchy() {
-        addSubview(mainImageView)
-        mainImageView.addSubview(vStackView)
+        contentView.addSubview(mainImageView)
+        mainImageView.addSubview(mainBannerVStackView)
     }
     
     private func setLayout() {
@@ -64,7 +65,7 @@ class MainCell: UICollectionViewCell {
             $0.edges.equalToSuperview()
         }
         
-        vStackView.snp.makeConstraints {
+        mainBannerVStackView.snp.makeConstraints {
             $0.leading.equalTo(mainImageView.snp.leading).offset(16)
             $0.bottom.equalTo(mainImageView.snp.bottom).inset(28)
         }

@@ -7,7 +7,6 @@
 
 import UIKit
 import Combine
-import Foundation
 
 import SnapKit
 import Then
@@ -39,6 +38,8 @@ final class HomeViewFooterViewCell: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - UI & Layout
+    
     private func setHierarchy() {
         addSubview(bannerPageControl)
     }
@@ -57,15 +58,13 @@ final class HomeViewFooterViewCell: UICollectionReusableView {
     
     func bind(input: PassthroughSubject<Int, Never>, indexPath: IndexPath, pageNumber: Int) {
         bannerPageControl.numberOfPages = pageNumber
-        if indexPath.section == 1 {
-            self.isHidden = true
-        } else {
-            input
-                .debounce(for: 0.15, scheduler: RunLoop.main)
-                .sink { [weak self] currentPage in
-                    print(currentPage)
-                    self?.bannerPageControl.currentPage = currentPage
-                }.store(in: cancelBag)
-        }
+        
+        input
+            .debounce(for: 0.15, scheduler: RunLoop.main)
+            .sink { [weak self] currentPage in
+                print(currentPage)
+                self?.bannerPageControl.currentPage = currentPage
+            }.store(in: cancelBag)
     }
 }
+

@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class RequiredContentsCell: UICollectionViewCell {
+final class RequiredContentsCell: UICollectionViewCell {
     
     // MARK: - UIComponents
     
@@ -22,6 +22,7 @@ class RequiredContentsCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         setHierarchy()
         setLayout()
     }
@@ -31,7 +32,7 @@ class RequiredContentsCell: UICollectionViewCell {
     }
     
     private func setHierarchy() {
-        addSubview(mainImageView)
+        contentView.addSubview(mainImageView)
     }
     
     private func setLayout() {

@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class LoginViewModel: ViewModelType {
+final class LoginViewModel: ViewModelType {
     
     var cancelBag = CancelBag()
     

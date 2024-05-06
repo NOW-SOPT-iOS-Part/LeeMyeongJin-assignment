@@ -7,6 +7,8 @@
 
 import UIKit
 
+import Then
+
 enum TVINGTabBarItem {
     case home
     case toBeReleased
@@ -57,11 +59,11 @@ enum TVINGTabBarItem {
         case .home:
             return CenterViewController()
         case .toBeReleased:
-            return ViewController(.blue)
+            return UIViewController(backgroundColor: .blue)
         case .search:
-            return ViewController(.tvingRed)
+            return UIViewController(backgroundColor: .tvingRed)
         case .record:
-            return ViewController(.orange)
+            return UIViewController(backgroundColor: .orange)
         }
     }
 }

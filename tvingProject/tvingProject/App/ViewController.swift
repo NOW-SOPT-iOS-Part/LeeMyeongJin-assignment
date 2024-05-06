@@ -9,8 +9,6 @@ import UIKit
 
 final class ViewController: UIViewController {
     
-    // MARK: - UIComponents
-    
     // MARK: - Life Cycles
     
     init(_ backgroundColor: UIColor) {
@@ -24,14 +22,5 @@ final class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        setUI()
     }
-    
-    // MARK: - UI & Layout
-    
-    private func setUI() {
-        view.backgroundColor = .darkGray
-    }
-    
 }

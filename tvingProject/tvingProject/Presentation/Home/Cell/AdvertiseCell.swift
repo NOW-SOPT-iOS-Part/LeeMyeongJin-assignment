@@ -7,37 +7,18 @@
 
 import UIKit
 
-class AdvertiseCell: UICollectionViewCell {
+final class AdvertiseCell: UICollectionViewCell {
     // MARK: - UIComponents
     
     private var mainImageView = UIImageView().then {
         $0.image = UIImage(resource: .mainImage5)
     }
     
-    private let rankingLabel = UILabel().then {
-        $0.text = "1"
-        $0.font = .pretendardFont(weight: 700, size: 19)
-    }
-    
-    private let title = UILabel().then {
-        $0.text = "1"
-        $0.font = .pretendardFont(weight: 700, size: 19)
-    }
-    
-    private let episodes = UILabel().then {
-        $0.text = "1"
-        $0.font = .pretendardFont(weight: 700, size: 19)
-    }
-    
-    private let viewerShipRatings = UILabel().then {
-        $0.text = "1"
-        $0.font = .pretendardFont(weight: 700, size: 19)
-    }
-    
     // MARK: - Life Cycles
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         setHierarchy()
         setLayout()
     }
@@ -47,7 +28,7 @@ class AdvertiseCell: UICollectionViewCell {
     }
     
     private func setHierarchy() {
-        addSubview(mainImageView)
+        contentView.addSubview(mainImageView)
     }
     
     private func setLayout() {

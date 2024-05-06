@@ -57,29 +57,21 @@ final class CenterViewController: UIViewController {
         return vc
     }()
     
-    private let vc2: UIViewController = {
-        let vc = UIViewController()
-        vc.view.backgroundColor = .green
-        return vc
-    }()
+    private let vc2 = UIViewController().then {
+        $0.view.backgroundColor = .green
+    }
     
-    private let vc3: UIViewController = {
-        let vc = UIViewController()
-        vc.view.backgroundColor = .blue
-        return vc
-    }()
+    private let vc3 = UIViewController().then {
+        $0.view.backgroundColor = .blue
+    }
     
-    private let vc4: UIViewController = {
-        let vc = UIViewController()
-        vc.view.backgroundColor = .gray3
-        return vc
-    }()
+    private let vc4 = UIViewController().then {
+        $0.view.backgroundColor = .gray3
+    }
     
-    private let vc5: UIViewController = {
-        let vc = UIViewController()
-        vc.view.backgroundColor = .systemPink
-        return vc
-    }()
+    private let vc5 = UIViewController().then {
+        $0.view.backgroundColor = .systemPink
+    }
     
     // 큰 pageViewController 설정
     private lazy var pageViewController: UIPageViewController = {
@@ -165,7 +157,9 @@ final class CenterViewController: UIViewController {
 extension CenterViewController: UIPageViewControllerDelegate {
     // 사용자의 제스처로 뷰가 이동할때 호출
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        if completed, let viewController = pageViewController.viewControllers?.first, let index = dataViewControllers.firstIndex(of: viewController) {
+        if completed,
+           let viewController = pageViewController.viewControllers?.first,
+           let index = dataViewControllers.firstIndex(of: viewController) {
             currentPage = index
             segmentedControl.selectedSegmentIndex = index
         }
