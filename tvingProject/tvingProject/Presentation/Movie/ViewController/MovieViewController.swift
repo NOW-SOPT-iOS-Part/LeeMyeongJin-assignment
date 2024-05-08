@@ -88,7 +88,7 @@ extension MovieViewController {
         MovieService.shared.fetctMovieChart(date: "20240507") { [weak self] response in
             switch response {
             case.success(let data):
-                guard let data = data as? BoxOfficeModel else { return }
+                guard let data = data as? MovieModel else { return }
                 self?.movies.append(contentsOf: data.boxOfficeResult.dailyBoxOfficeList)
                 self?.rootView.movieCollectionView.reloadData()
             case .requestErr:

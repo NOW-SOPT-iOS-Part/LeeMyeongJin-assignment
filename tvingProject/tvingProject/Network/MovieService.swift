@@ -24,7 +24,7 @@ extension MovieService {
                 let statusCode = response.statusCode
                 let data = response.data
                 
-                let networkResult = self.judgeStatus(by: statusCode, data, BoxOfficeModel.self)
+                let networkResult = self.judgeStatus(by: statusCode, data, MovieModel.self)
                 completion(networkResult)
                 
             case .failure:
