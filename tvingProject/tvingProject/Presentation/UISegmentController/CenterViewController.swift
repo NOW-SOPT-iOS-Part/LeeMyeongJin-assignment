@@ -20,6 +20,7 @@ final class CenterViewController: UIViewController {
     // MARK: - Properties
     
     private let segmentsItem = ["홈", "실시간", "TV프로그램", "영화", "파라마운트+"]
+    private let startViewIndex: Int = 3 // test 용으로만 사용, otherwisw 0
     
     // 페이지 뷰컨에 담아 있는 ViewController 설정
     private var dataViewControllers: [UIViewController] {
@@ -65,9 +66,10 @@ final class CenterViewController: UIViewController {
         $0.view.backgroundColor = .blue
     }
     
-    private let vc4 = UIViewController().then {
-        $0.view.backgroundColor = .gray3
-    }
+    private let vc4: UIViewController = {
+        let vc = MovieViewController()
+        return vc
+    }()
     
     private let vc5 = UIViewController().then {
         $0.view.backgroundColor = .systemPink
@@ -76,7 +78,7 @@ final class CenterViewController: UIViewController {
     // 큰 pageViewController 설정
     private lazy var pageViewController: UIPageViewController = {
         let vc = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
-        vc.setViewControllers([self.dataViewControllers[0]], direction: .forward, animated: true)
+        vc.setViewControllers([self.dataViewControllers[startViewIndex]], direction: .forward, animated: true)
         return vc
     }()
     
@@ -113,7 +115,7 @@ final class CenterViewController: UIViewController {
             for: .selected
         )
         
-        self.segmentedControl.selectedSegmentIndex = 0
+        self.segmentedControl.selectedSegmentIndex = startViewIndex
     }
     
     private func setHierarchy() {
