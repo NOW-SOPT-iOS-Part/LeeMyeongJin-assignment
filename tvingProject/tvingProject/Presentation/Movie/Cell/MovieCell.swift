@@ -15,13 +15,11 @@ final class MovieCell: UICollectionViewCell {
     // MARK: - UIComponents
     
     let rankLabel = LabelFactory.build(text: "랭킹 1위", font: .pretendardFont(weight: 800, size: 20))
-    let movieName = LabelFactory.build(text: "범죄 도시", font: .pretendardFont(weight: 500, size: 15)).then {
+    let movieName = LabelFactory.build(text: "범죄 도시", font: .pretendardFont(weight: 700, size: 15)).then {
         $0.numberOfLines = 2
     }
     let movieOpenDate = LabelFactory.build(text: "개봉일 ", font: .pretendardFont(weight: 600, size: 14))
-    let acumulativeNumberOfAudience = LabelFactory.build(text: "870만", font: .pretendardFont(weight: 500, size: 15)).then {
-        $0.numberOfLines = 2
-    }
+    let acumulativeNumberOfAudience = LabelFactory.build(text: "870만", font: .pretendardFont(weight: 500, size: 15))
     
     private lazy var movieVStackView = UIStackView(
         arrangedSubviews: [
