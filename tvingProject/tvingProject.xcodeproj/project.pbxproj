@@ -24,6 +24,7 @@
 		7190420C2BEB4ABA00877F50 /* MovieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190420B2BEB4ABA00877F50 /* MovieView.swift */; };
 		7190420E2BEB4AD000877F50 /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190420D2BEB4AD000877F50 /* MovieCell.swift */; };
 		719042102BEB4D1700877F50 /* LabelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190420F2BEB4D1700877F50 /* LabelFactory.swift */; };
+		719042122BEB622D00877F50 /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719042112BEB622D00877F50 /* Formatter.swift */; };
 		71A6591D2BC298A200583D62 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A6591C2BC298A200583D62 /* AppDelegate.swift */; };
 		71A6591F2BC298A200583D62 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A6591E2BC298A200583D62 /* SceneDelegate.swift */; };
 		71A659212BC298A200583D62 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A659202BC298A200583D62 /* LoginViewController.swift */; };
@@ -91,6 +92,7 @@
 		7190420B2BEB4ABA00877F50 /* MovieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieView.swift; sourceTree = "<group>"; };
 		7190420D2BEB4AD000877F50 /* MovieCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
 		7190420F2BEB4D1700877F50 /* LabelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelFactory.swift; sourceTree = "<group>"; };
+		719042112BEB622D00877F50 /* Formatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatter.swift; sourceTree = "<group>"; };
 		71A659192BC298A200583D62 /* tvingProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tvingProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71A6591C2BC298A200583D62 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ../App/AppDelegate.swift; sourceTree = "<group>"; };
 		71A6591E2BC298A200583D62 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SceneDelegate.swift; path = ../App/SceneDelegate.swift; sourceTree = "<group>"; };
@@ -175,6 +177,7 @@
 				718F0AE22BCE65DF00E2829D /* HalfSizePresentationController.swift */,
 				71D250902BD6C11700F17278 /* className.swift */,
 				71D250A52BD8F5F600F17278 /* CompositionalLayout.swift */,
+				719042112BEB622D00877F50 /* Formatter.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -624,6 +627,7 @@
 				71D250892BD6B6F600F17278 /* ParaMountPlus.swift in Sources */,
 				71A6591D2BC298A200583D62 /* AppDelegate.swift in Sources */,
 				71D250962BD6C5D100F17278 /* TVINGTabBarItem.swift in Sources */,
+				719042122BEB622D00877F50 /* Formatter.swift in Sources */,
 				718F0AE62BCE81D000E2829D /* LoginView.swift in Sources */,
 				71FCF2FD2BE3F56C00D8528A /* ViewModelType.swift in Sources */,
 				71A6591F2BC298A200583D62 /* SceneDelegate.swift in Sources */,
