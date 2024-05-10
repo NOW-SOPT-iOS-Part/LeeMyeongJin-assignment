@@ -86,9 +86,18 @@ extension MovieViewController: UICollectionViewDelegateFlowLayout {
 
 extension MovieViewController {
     private func fetchData() {
-        MovieService.shared.fetctMovieChart(date: "20240508") { [weak self] response in
+        let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: Date())
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyyMMdd"
+        
+        guard let formattedDate = yesterday.map(dateFormatter.string(from:)) else {
+            print("어제 날씨 바인딩 실패!")
+            return
+        }
+        
+        MovieService.shared.fetctMovieChart(date: formattedDate) { [weak self] response in
             switch response {
-            case.success(let data):
+            case .success(let data):
                 guard let data = data as? MovieModel else { return }
                 self?.movies.append(contentsOf: data.boxOfficeResult.dailyBoxOfficeList)
                 self?.rootView.movieCollectionView.reloadData()
