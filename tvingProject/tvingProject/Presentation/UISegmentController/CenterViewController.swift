@@ -20,7 +20,7 @@ final class CenterViewController: UIViewController {
     // MARK: - Properties
     
     private let segmentsItem = ["홈", "실시간", "TV프로그램", "영화", "파라마운트+"]
-    private let startViewIndex: Int = 3 // test 용으로만 사용, otherwisw 0
+    private let startViewIndex: Int = 0 // test 용으로만 사용, otherwisw 0
     
     // 페이지 뷰컨에 담아 있는 ViewController 설정
     private var dataViewControllers: [UIViewController] {

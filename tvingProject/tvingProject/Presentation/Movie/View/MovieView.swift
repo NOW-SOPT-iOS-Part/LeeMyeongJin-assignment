@@ -24,8 +24,6 @@ final class MovieView: UIView {
         return collectionView
     }()
     
-    
-    
     // MARK: - Life Cycles
     
     override init(frame: CGRect) {
@@ -48,7 +46,7 @@ final class MovieView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubview(movieCollectionView)
+        addSubview(movieCollectionView)
     }
     
     private func setLayout() {
