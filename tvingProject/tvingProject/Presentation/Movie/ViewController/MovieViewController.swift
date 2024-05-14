@@ -57,9 +57,8 @@ extension MovieViewController: UICollectionViewDataSource {
         else { return UICollectionViewCell() }
         
         let model = self.movies[indexPath.row]
-        let changeFormat = Formatter.formatNumberKoreanStyle(model.audiAcc)
+        cell.bind(model: model)
         
-        cell.bind(rank: model.rank, movieName: model.movieNm, date: "개봉일: \(model.openDt)", accAudience: "누적 관객수: \(changeFormat ?? "")")
         return cell
     }
 }

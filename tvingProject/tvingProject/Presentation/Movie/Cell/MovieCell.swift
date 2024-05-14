@@ -66,10 +66,13 @@ final class MovieCell: UICollectionViewCell {
         }
     }
     
-    func bind(rank: String, movieName: String, date: String, accAudience: String) {
-        self.rankLabel.text = "랭킹" + rank + "위"
-        self.movieName.text = movieName
-        self.movieOpenDate.text = date
-        self.acumulativeNumberOfAudience.text = accAudience
+    func bind(model: DailyBoxOfficeList) {
+        self.rankLabel.text = "랭킹" + model.rank + "위"
+        self.movieName.text = model.movieNm
+        self.movieOpenDate.text = "개봉일: \(model.openDt)"
+        
+        let changeFormat = Formatter.formatNumberKoreanStyle(model.audiAcc)
+        
+        self.acumulativeNumberOfAudience.text = "누적 관객수: \(changeFormat ?? "")"
     }
 }
