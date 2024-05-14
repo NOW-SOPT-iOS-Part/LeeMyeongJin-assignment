@@ -14,7 +14,10 @@ enum MovieTargetType {
 
 extension MovieTargetType: TargetType {
     var baseURL: URL {
-        return URL(string: Config.baseURL)!
+        guard let url = URL(string: Config.baseURL) else {
+            preconditionFailure("유효하지 않는 base URL: \(Config.baseURL)")
+        }
+        return url
     }
     
     var path: String {
