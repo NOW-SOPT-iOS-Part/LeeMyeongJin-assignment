@@ -6,18 +6,17 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 final class LoginViewController: UIViewController {
     
     // MARK: - Property
     
-    private let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
-    private let passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]).{8,}$"
-    
     var userNickName: String = ""
     
-    private var viewModel: LoginViewModel
-    private var cancelBag = CancelBag()
+    private let viewModel: LoginViewModel
+    private let disposeBag = DisposeBag()
     
     private var passwordVisibility: PasswordVisibility = .hidden
     
@@ -27,7 +26,7 @@ final class LoginViewController: UIViewController {
     
     // MARK: - Life Cycles
     
-    init(viewModel: LoginViewModel) {
+    init(viewModel: LoginViewModel) { // 의존성 주입
         self.viewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)
@@ -54,17 +53,17 @@ final class LoginViewController: UIViewController {
     
     private func bind() {
         let input = LoginViewModel.Input(
-            loginTextField: rootView.idTextField.textPublisher,
-            passTextField: rootView.passwordTextField.textPublisher
+            loginTextField: rootView.idTextField.rx.text.orEmpty.asObservable(),
+            passTextField: rootView.passwordTextField.rx.text.orEmpty.asObservable()
         )
         
-        let output = viewModel.transform(from: input, cancelBag: cancelBag)
+        let output = viewModel.transform(input: input, disposeBag: disposeBag)
         
         output.validate
-            .print()
-            .receive(on: RunLoop.main)
-            .assign(to: \.isValid, on: rootView.loginButton)
-            .store(in: cancelBag)
+            .subscribe(with: self, onNext: { [weak self] owner, isvalid in
+                self?.updateButtonStyle(button: owner.rootView.loginButton, enabled: isvalid)
+            })
+            .disposed(by: disposeBag)
     }
     
     // MARK: - @objc Function
@@ -111,26 +110,6 @@ final class LoginViewController: UIViewController {
         
         updateButtonStyle(button: rootView.loginButton, enabled: !isPasswordFieldEmpty)
     }
-//    
-//    private func validateAndToggleLoginButton() {
-//        let isEmailValid = isValidEmail(rootView.idTextField.text)
-//        let isPasswordValid = isValidPassword(rootView.passwordTextField.text)
-//        let isFormValid = isEmailValid && isPasswordValid
-//        
-//        updateButtonStyle(button: rootView.loginButton, enabled: isFormValid)
-//    }
-//    
-//    private func isValidEmail(_ string: String?) -> Bool {
-//        guard let string = string else { return false }
-//        
-//        return string.range(of: self.emailRegex, options: .regularExpression) != nil
-//    }
-//    
-//    private func isValidPassword(_ string: String?) -> Bool {
-//        guard let string = string else { return false }
-//        
-//        return string.range(of: self.passwordRegex, options: .regularExpression) != nil
-//    }
     
     private func updateButtonStyle(button: UIButton, enabled: Bool) {
         let style = enabled ? ButtonStyle.enabled : ButtonStyle.disabled

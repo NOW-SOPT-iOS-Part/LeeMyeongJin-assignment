@@ -25,6 +25,11 @@
 		7190420E2BEB4AD000877F50 /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190420D2BEB4AD000877F50 /* MovieCell.swift */; };
 		719042102BEB4D1700877F50 /* LabelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190420F2BEB4D1700877F50 /* LabelFactory.swift */; };
 		719042122BEB622D00877F50 /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719042112BEB622D00877F50 /* Formatter.swift */; };
+		719CB0B72C086ADB0049A997 /* RxBlocking in Frameworks */ = {isa = PBXBuildFile; productRef = 719CB0B62C086ADB0049A997 /* RxBlocking */; };
+		719CB0B92C086ADB0049A997 /* RxBlocking-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 719CB0B82C086ADB0049A997 /* RxBlocking-Dynamic */; };
+		719CB0BB2C086ADB0049A997 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 719CB0BA2C086ADB0049A997 /* RxCocoa */; };
+		719CB0BD2C086ADB0049A997 /* RxCocoa-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 719CB0BC2C086ADB0049A997 /* RxCocoa-Dynamic */; };
+		719CB0BF2C086ADB0049A997 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 719CB0BE2C086ADB0049A997 /* RxRelay */; };
 		71A6591D2BC298A200583D62 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A6591C2BC298A200583D62 /* AppDelegate.swift */; };
 		71A6591F2BC298A200583D62 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A6591E2BC298A200583D62 /* SceneDelegate.swift */; };
 		71A659212BC298A200583D62 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A659202BC298A200583D62 /* LoginViewController.swift */; };
@@ -152,11 +157,16 @@
 			files = (
 				71A6594B2BC2A6B400583D62 /* SnapKit in Frameworks */,
 				71A659502BC2A6BD00583D62 /* Then in Frameworks */,
+				719CB0BB2C086ADB0049A997 /* RxCocoa in Frameworks */,
 				719041F92BEB42DB00877F50 /* CombineMoya in Frameworks */,
 				719041FB2BEB42DB00877F50 /* Moya in Frameworks */,
 				719041FF2BEB42DB00877F50 /* RxMoya in Frameworks */,
+				719CB0BF2C086ADB0049A997 /* RxRelay in Frameworks */,
+				719CB0B72C086ADB0049A997 /* RxBlocking in Frameworks */,
+				719CB0B92C086ADB0049A997 /* RxBlocking-Dynamic in Frameworks */,
 				71A6594D2BC2A6B400583D62 /* SnapKit-Dynamic in Frameworks */,
 				719041FD2BEB42DB00877F50 /* ReactiveMoya in Frameworks */,
+				719CB0BD2C086ADB0049A997 /* RxCocoa-Dynamic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -513,6 +523,11 @@
 				719041FA2BEB42DB00877F50 /* Moya */,
 				719041FC2BEB42DB00877F50 /* ReactiveMoya */,
 				719041FE2BEB42DB00877F50 /* RxMoya */,
+				719CB0B62C086ADB0049A997 /* RxBlocking */,
+				719CB0B82C086ADB0049A997 /* RxBlocking-Dynamic */,
+				719CB0BA2C086ADB0049A997 /* RxCocoa */,
+				719CB0BC2C086ADB0049A997 /* RxCocoa-Dynamic */,
+				719CB0BE2C086ADB0049A997 /* RxRelay */,
 			);
 			productName = tvingProject;
 			productReference = 71A659192BC298A200583D62 /* tvingProject.app */;
@@ -546,6 +561,7 @@
 				71A659492BC2A6B400583D62 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				71A6594E2BC2A6BD00583D62 /* XCRemoteSwiftPackageReference "Then" */,
 				719041F72BEB42DB00877F50 /* XCRemoteSwiftPackageReference "Moya" */,
+				719CB0B52C086ADB0049A997 /* XCRemoteSwiftPackageReference "RxSwift" */,
 			);
 			productRefGroup = 71A6591A2BC298A200583D62 /* Products */;
 			projectDirPath = "";
@@ -866,6 +882,14 @@
 				minimumVersion = 15.0.3;
 			};
 		};
+		719CB0B52C086ADB0049A997 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.7.1;
+			};
+		};
 		71A659492BC2A6B400583D62 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -904,6 +928,31 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 719041F72BEB42DB00877F50 /* XCRemoteSwiftPackageReference "Moya" */;
 			productName = RxMoya;
+		};
+		719CB0B62C086ADB0049A997 /* RxBlocking */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 719CB0B52C086ADB0049A997 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxBlocking;
+		};
+		719CB0B82C086ADB0049A997 /* RxBlocking-Dynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 719CB0B52C086ADB0049A997 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = "RxBlocking-Dynamic";
+		};
+		719CB0BA2C086ADB0049A997 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 719CB0B52C086ADB0049A997 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		719CB0BC2C086ADB0049A997 /* RxCocoa-Dynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 719CB0B52C086ADB0049A997 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = "RxCocoa-Dynamic";
+		};
+		719CB0BE2C086ADB0049A997 /* RxRelay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 719CB0B52C086ADB0049A997 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxRelay;
 		};
 		71A6594A2BC2A6B400583D62 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;

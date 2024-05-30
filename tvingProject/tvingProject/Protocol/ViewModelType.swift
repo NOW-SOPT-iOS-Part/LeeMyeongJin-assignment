@@ -6,11 +6,12 @@
 //
 
 import Combine
+import RxSwift
 
 protocol ViewModelType {
 
     associatedtype Input
     associatedtype Output
 
-    func transform(from input: Input, cancelBag: CancelBag) -> Output
+    func transform(input: Input, disposeBag: DisposeBag) -> Output
 }

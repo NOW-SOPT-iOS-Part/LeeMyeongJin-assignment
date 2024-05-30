@@ -6,42 +6,38 @@
 //
 
 import Foundation
-import Combine
+import RxSwift
+import RxCocoa
 
 final class LoginViewModel: ViewModelType {
     
-    var cancelBag = CancelBag()
+    private let disposeBag = DisposeBag()
     
     private let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
     private let passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]).{8,}$"
     
     struct Input {
-        let loginTextField: AnyPublisher<String, Never>
-        let passTextField: AnyPublisher<String, Never>
+        let loginTextField: Observable<String>
+        let passTextField: Observable<String>
     }
     
     struct Output {
-        let validate: AnyPublisher<Bool, Never>
+        let validate: Observable<Bool>
     }
     
-    func transform(from input: Input, cancelBag: CancelBag) -> Output {
+    func transform(input: Input, disposeBag: DisposeBag) -> Output {
         
-        let emailValidationPublisher = input.loginTextField
-            .print()
+        let emailValidationObservable = input.loginTextField
             .map { $0.range(of: self.emailRegex, options: .regularExpression) != nil }
-            .eraseToAnyPublisher()
-
-        let passwordValidationPublisher = input.passTextField
-            .print()
-            .map { $0.range(of: self.passwordRegex, options: .regularExpression) != nil }
-            .eraseToAnyPublisher()
-
-        let isFormValidPublisher = Publishers.CombineLatest(emailValidationPublisher, passwordValidationPublisher)
-            .map { $0 && $1 }
-            .eraseToAnyPublisher()
         
-        return Output(validate: isFormValidPublisher)
-            
+        let passwordValidationObservable = input.passTextField
+            .map { $0.range(of: self.passwordRegex, options: .regularExpression) != nil }
+        
+        let isFormValidObservable = Observable.combineLatest(
+            emailValidationObservable,
+            passwordValidationObservable
+        ) { $0 && $1 }
+        
+        return Output(validate: isFormValidObservable)
     }
-    
 }
