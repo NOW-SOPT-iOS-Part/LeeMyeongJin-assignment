@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		71102E962C09B5BB00B3956D /* WelcomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71102E952C09B5BB00B3956D /* WelcomeViewModel.swift */; };
+		71102E9E2C09BAD300B3956D /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = 71102E9D2C09BAD300B3956D /* RxGesture */; };
 		718F0AE32BCE65DF00E2829D /* HalfSizePresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718F0AE22BCE65DF00E2829D /* HalfSizePresentationController.swift */; };
 		718F0AE62BCE81D000E2829D /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718F0AE52BCE81D000E2829D /* LoginView.swift */; };
 		718F0AE92BCE89F900E2829D /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718F0AE82BCE89F900E2829D /* WelcomeView.swift */; };
@@ -84,6 +86,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		71102E952C09B5BB00B3956D /* WelcomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewModel.swift; sourceTree = "<group>"; };
 		718F0AE22BCE65DF00E2829D /* HalfSizePresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HalfSizePresentationController.swift; sourceTree = "<group>"; };
 		718F0AE52BCE81D000E2829D /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		718F0AE82BCE89F900E2829D /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
@@ -156,6 +159,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				71A6594B2BC2A6B400583D62 /* SnapKit in Frameworks */,
+				71102E9E2C09BAD300B3956D /* RxGesture in Frameworks */,
 				71A659502BC2A6BD00583D62 /* Then in Frameworks */,
 				719CB0BB2C086ADB0049A997 /* RxCocoa in Frameworks */,
 				719041F92BEB42DB00877F50 /* CombineMoya in Frameworks */,
@@ -173,6 +177,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		71102E972C09B75D00B3956D /* View */ = {
+			isa = PBXGroup;
+			children = (
+				718F0AE82BCE89F900E2829D /* WelcomeView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		71102E9A2C09B76500B3956D /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				71102E952C09B5BB00B3956D /* WelcomeViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		71102E9B2C09B76600B3956D /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				71A6595C2BC2BFCC00583D62 /* WelcomeViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
 		71164E1A2BDD38820024E283 /* FooterViewCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -206,8 +234,9 @@
 		718F0AE72BCE89E300E2829D /* Welcome */ = {
 			isa = PBXGroup;
 			children = (
-				718F0AE82BCE89F900E2829D /* WelcomeView.swift */,
-				71A6595C2BC2BFCC00583D62 /* WelcomeViewController.swift */,
+				71102E9B2C09B76600B3956D /* ViewController */,
+				71102E9A2C09B76500B3956D /* ViewModel */,
+				71102E972C09B75D00B3956D /* View */,
 			);
 			path = Welcome;
 			sourceTree = "<group>";
@@ -528,6 +557,7 @@
 				719CB0BA2C086ADB0049A997 /* RxCocoa */,
 				719CB0BC2C086ADB0049A997 /* RxCocoa-Dynamic */,
 				719CB0BE2C086ADB0049A997 /* RxRelay */,
+				71102E9D2C09BAD300B3956D /* RxGesture */,
 			);
 			productName = tvingProject;
 			productReference = 71A659192BC298A200583D62 /* tvingProject.app */;
@@ -562,6 +592,7 @@
 				71A6594E2BC2A6BD00583D62 /* XCRemoteSwiftPackageReference "Then" */,
 				719041F72BEB42DB00877F50 /* XCRemoteSwiftPackageReference "Moya" */,
 				719CB0B52C086ADB0049A997 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				71102E9C2C09BAD300B3956D /* XCRemoteSwiftPackageReference "RxGesture" */,
 			);
 			productRefGroup = 71A6591A2BC298A200583D62 /* Products */;
 			projectDirPath = "";
@@ -639,6 +670,7 @@
 				71D2509B2BD6CB1D00F17278 /* HomeViewHeaderViewCell.swift in Sources */,
 				7190420C2BEB4ABA00877F50 /* MovieView.swift in Sources */,
 				71D250A42BD8E11500F17278 /* HomeLogoView.swift in Sources */,
+				71102E962C09B5BB00B3956D /* WelcomeViewModel.swift in Sources */,
 				71D2507D2BD6B48700F17278 /* HomeView.swift in Sources */,
 				71D250892BD6B6F600F17278 /* ParaMountPlus.swift in Sources */,
 				71A6591D2BC298A200583D62 /* AppDelegate.swift in Sources */,
@@ -874,6 +906,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		71102E9C2C09BAD300B3956D /* XCRemoteSwiftPackageReference "RxGesture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxGesture";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.4;
+			};
+		};
 		719041F72BEB42DB00877F50 /* XCRemoteSwiftPackageReference "Moya" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Moya/Moya";
@@ -909,6 +949,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		71102E9D2C09BAD300B3956D /* RxGesture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 71102E9C2C09BAD300B3956D /* XCRemoteSwiftPackageReference "RxGesture" */;
+			productName = RxGesture;
+		};
 		719041F82BEB42DB00877F50 /* CombineMoya */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 719041F72BEB42DB00877F50 /* XCRemoteSwiftPackageReference "Moya" */;
