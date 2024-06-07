@@ -24,11 +24,22 @@ class LoginCoordinator: Coordinator {
     // MARK: - Start
     
     func start() {
+        
+        var loginSuccess: Bool = false
+        
+        // true면 main 으로 가는 로직입니다. 이부분을 통해서 뷰 테스트를 할 수 있습니다.
+        // 테스트 용도로만 쓰고 항상 false로 유지하세요
+        
         let loginViewController = LoginViewController(
             viewModel: LoginViewModel()
         )
+        
+        let homeViewController = TVINGTabBarController()
+        
+        let mainViewController = loginSuccess ? homeViewController : loginViewController
+        
         loginViewController.coordinator = self
-        navigationController.pushViewController(loginViewController, animated: true)
+        navigationController.pushViewController(mainViewController, animated: true)
     }
     
     
