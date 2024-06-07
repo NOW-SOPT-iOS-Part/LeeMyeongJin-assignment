@@ -16,6 +16,9 @@ final class MovieView: UIView {
     
     lazy var movieCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumLineSpacing = 10
+        layout.minimumInteritemSpacing = 10
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
@@ -56,4 +59,3 @@ final class MovieView: UIView {
         }
     }
 }
-

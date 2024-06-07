@@ -6,13 +6,28 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 final class MovieViewController: UIViewController {
     
     // MARK: - UIComponents
     
     private let rootView = MovieView()
-    private var movies: [DailyBoxOfficeList] = []
+    private var viewModel: MovieViewModel!
+    private let disposeBag = DisposeBag()
+    
+    // MARK: - Initialization
+    
+    init(viewModel: MovieViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - Life Cycles
     
@@ -20,15 +35,14 @@ final class MovieViewController: UIViewController {
         super.viewDidLoad()
         
         setUI()
-        setDelegate()
         setRegister()
-        fetchData()
+        setDelegate()
+        bindViewModel()
     }
     
     override func loadView() {
         self.view = rootView
     }
-    
     
     // MARK: - UI & Layout
     
@@ -38,79 +52,54 @@ final class MovieViewController: UIViewController {
     
     private func setDelegate() {
         rootView.movieCollectionView.delegate = self
-        rootView.movieCollectionView.dataSource = self
     }
     
     private func setRegister() {
         rootView.movieCollectionView.register(MovieCell.self, forCellWithReuseIdentifier: MovieCell.className)
     }
     
-}
-
-extension MovieViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        self.movies.count
+    private func bindViewModel() {
+        let input = MovieViewModel.Input(fetchMovies: Observable.just(()))
+        let output = viewModel.transform(input: input, disposeBag: disposeBag)
+        
+        output.movies
+            .drive(rootView.movieCollectionView.rx.items(cellIdentifier: MovieCell.className, cellType: MovieCell.self)) { _, model, cell in
+                cell.bind(model: model)
+            }
+            .disposed(by: disposeBag)
+        
+        output.error
+            .drive(onNext: { [weak self] errorMessage in
+                self?.showErrorAlert(message: errorMessage)
+            })
+            .disposed(by: disposeBag)
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieCell.className, for: indexPath) as? MovieCell
-        else { return UICollectionViewCell() }
-        
-        let model = self.movies[indexPath.row]
-        cell.bind(model: model)
-        
-        return cell
+    private func showErrorAlert(message: String) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
 }
+
+// MARK: - UICollectionViewDelegateFlowLayout
 
 extension MovieViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        return CGSize(width: self.rootView.movieCollectionView.frame.width / 3 + 50,
-                      height: self.rootView.movieCollectionView.frame.height / 4)
+        let padding: CGFloat = 10
+        let collectionViewSize = collectionView.frame.size.width - padding * 3
+        return CGSize(width: collectionViewSize / 2, height: collectionViewSize / 2)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 20
+        return 10
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 5
+        return 10
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 10, left: 10, bottom: 5, right: 10)
-    }
-}
-
-extension MovieViewController {
-    private func fetchData() {
-        let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: Date())
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyyMMdd"
-        
-        guard let formattedDate = yesterday.map(dateFormatter.string(from:)) else {
-            print("어제 날씨 바인딩 실패!")
-            return
-        }
-        
-        MovieService.shared.fetctMovieChart(date: formattedDate) { [weak self] response in
-            switch response {
-            case .success(let data):
-                guard let data = data as? MovieModel else { return }
-                self?.movies.append(contentsOf: data.boxOfficeResult.dailyBoxOfficeList)
-                self?.rootView.movieCollectionView.reloadData()
-            case .requestErr:
-                print("요청 오류 입니다")
-            case .decodedErr:
-                print("디코딩 오류 입니다")
-            case .pathErr:
-                print("경로 오류 입니다")
-            case .serverErr:
-                print("서버 오류입니다")
-            case .networkFail:
-                print("네트워크 오류입니다")
-            }
-        }
+        return UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     }
 }

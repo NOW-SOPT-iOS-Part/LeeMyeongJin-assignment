@@ -12,10 +12,6 @@ import Then
 
 final class LoginView: UIView {
     
-    // MARK: - Property
-    
-    var userNickName: String = ""
-    
     // MARK: - UIComponents
     
     private lazy var loginTitle = UILabel().then {

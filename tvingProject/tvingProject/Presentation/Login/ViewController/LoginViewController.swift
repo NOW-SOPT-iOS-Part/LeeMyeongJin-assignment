@@ -6,18 +6,19 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
+import RxGesture
 
 final class LoginViewController: UIViewController {
     
     // MARK: - Property
     
-    private let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
-    private let passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]).{8,}$"
+    var coordinator: LoginCoordinator?
+    private var userNickName: String = ""
     
-    var userNickName: String = ""
-    
-    private var viewModel: LoginViewModel
-    private var cancelBag = CancelBag()
+    private let viewModel: LoginViewModel
+    private let disposeBag = DisposeBag()
     
     private var passwordVisibility: PasswordVisibility = .hidden
     
@@ -27,7 +28,7 @@ final class LoginViewController: UIViewController {
     
     // MARK: - Life Cycles
     
-    init(viewModel: LoginViewModel) {
+    init(viewModel: LoginViewModel) { // 의존성 주입
         self.viewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)
@@ -45,61 +46,49 @@ final class LoginViewController: UIViewController {
         super.viewDidLoad()
         
         setDelegate()
-        setAddTarget()
         bind()
     }
-    
     
     // MARK: - Bind
     
     private func bind() {
         let input = LoginViewModel.Input(
-            loginTextField: rootView.idTextField.textPublisher,
-            passTextField: rootView.passwordTextField.textPublisher
+            loginTextField: rootView.idTextField.rx.text.orEmpty.asObservable(),
+            passwordTextField: rootView.passwordTextField.rx.text.orEmpty.asObservable(),
+            loginButtonTapped: rootView.loginButton.rx.tap.asObservable(),
+            nickNameLabelTapped: rootView.makeNickNameLabel.rx.tapGesture().when(.recognized).map { _ in },
+            deletePasswordTapped: rootView.allDeleteButton.rx.tap.asObservable(),
+            togglePasswordTapped: rootView.togglePasswordButton.rx.tap.asObservable()
         )
         
-        let output = viewModel.transform(from: input, cancelBag: cancelBag)
+        let output = viewModel.transform(input: input, disposeBag: disposeBag)
         
         output.validate
-            .print()
-            .receive(on: RunLoop.main)
-            .assign(to: \.isValid, on: rootView.loginButton)
-            .store(in: cancelBag)
-    }
-    
-    // MARK: - @objc Function
-    
-    @objc
-    private func pushToLoginSuccess() {
-        let welcomeViewController = WelcomeViewController()
+            .map { $0 ? ButtonStyle.enabled : ButtonStyle.disabled }
+            .subscribe(onNext: { [weak self] style in
+                self?.updateButtonStyle(button: self?.rootView.loginButton, style: style)
+            })
+            .disposed(by: disposeBag)
         
-        if self.userNickName.isEmpty {
-            welcomeViewController.setWelcomeLabel(welcomeText: rootView.idTextField.text ?? "")
-        } else {
-            welcomeViewController.setWelcomeLabel(welcomeText: self.userNickName)
-        }
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        navigationController?.pushViewController(welcomeViewController, animated: true)
-    }
-    
-    @objc
-    private func presentToNicknameBottomSheet() {
-        let nicknameBottomSheet = NickNameBottomSheetVC()
-        nicknameBottomSheet.delegate = self
-        self.present(nicknameBottomSheet, animated: true)
-    }
-    
-    
-    @objc private func togglePasswordTapped() {
-        passwordVisibility.toggle()
-        rootView.passwordTextField.isSecureTextEntry = (passwordVisibility == .hidden)
-        rootView.togglePasswordButton.setImage(passwordVisibility.icon, for: .normal)
-    }
-    
-    @objc
-    private func deletePasswordTapped() {
-        rootView.passwordTextField.text = ""
-        updateButtonEnable()
+        output.loginSuccess
+            .subscribe { [weak self] _ in
+                self?.loginSuccess()
+            }.disposed(by: disposeBag)
+        
+        output.presentNicknameBottomSheet
+            .subscribe { [weak self] _ in
+                self?.presentToNicknameBottomSheet()
+            }.disposed(by: disposeBag)
+        
+        output.deletePasswordTappedEvent
+            .subscribe { [weak self] _ in
+                self?.deletePasswordTapped()
+            }.disposed(by: disposeBag)
+        
+        output.togglePasswordTappedEvent
+            .subscribe { [weak self] _ in
+                self?.togglePasswordTapped()
+            }.disposed(by: disposeBag)
     }
     
     // MARK: - Methods
@@ -109,60 +98,49 @@ final class LoginViewController: UIViewController {
         rootView.allDeleteButton.isHidden = isPasswordFieldEmpty
         rootView.togglePasswordButton.isHidden = isPasswordFieldEmpty
         
-        updateButtonStyle(button: rootView.loginButton, enabled: !isPasswordFieldEmpty)
+        updateButtonStyle(button: rootView.loginButton, style: isPasswordFieldEmpty ? .disabled : .enabled)
     }
-//    
-//    private func validateAndToggleLoginButton() {
-//        let isEmailValid = isValidEmail(rootView.idTextField.text)
-//        let isPasswordValid = isValidPassword(rootView.passwordTextField.text)
-//        let isFormValid = isEmailValid && isPasswordValid
-//        
-//        updateButtonStyle(button: rootView.loginButton, enabled: isFormValid)
-//    }
-//    
-//    private func isValidEmail(_ string: String?) -> Bool {
-//        guard let string = string else { return false }
-//        
-//        return string.range(of: self.emailRegex, options: .regularExpression) != nil
-//    }
-//    
-//    private func isValidPassword(_ string: String?) -> Bool {
-//        guard let string = string else { return false }
-//        
-//        return string.range(of: self.passwordRegex, options: .regularExpression) != nil
-//    }
     
-    private func updateButtonStyle(button: UIButton, enabled: Bool) {
-        let style = enabled ? ButtonStyle.enabled : ButtonStyle.disabled
-        
-        button.isEnabled = enabled
+    private func updateButtonStyle(button: UIButton?, style: ButtonStyle) {
+        guard let button = button else { return }
+        button.isEnabled = (style == .enabled)
         button.backgroundColor = style.backgroundColor
         button.setTitleColor(style.titleColor, for: .normal)
     }
     
-    private func setAddTarget() {
-        rootView.loginButton.addTarget(self, action: #selector(pushToLoginSuccess), for: .touchUpInside)
-        rootView.allDeleteButton.addTarget(self, action: #selector(deletePasswordTapped), for: .touchUpInside)
-        rootView.togglePasswordButton.addTarget(self, action: #selector(togglePasswordTapped), for: .touchUpInside)
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(presentToNicknameBottomSheet))
-        rootView.makeNickNameLabel.addGestureRecognizer(tapGesture)
+    private func loginSuccess() {
+        self.userNickName.isEmpty ?
+            coordinator?.showWelcomeViewController(nickname: rootView.idTextField.text ?? "") :
+            coordinator?.showWelcomeViewController(nickname: self.userNickName)
+    }
+    
+    private func presentToNicknameBottomSheet() {
+        let nicknameBottomSheet = NickNameBottomSheetVC()
+        nicknameBottomSheet.delegate = self
+        self.present(nicknameBottomSheet, animated: true)
+    }
+    
+    private func deletePasswordTapped() {
+        rootView.passwordTextField.text = ""
+        updateButtonEnable()
+    }
+    
+    private func togglePasswordTapped() {
+        passwordVisibility.toggle()
+        rootView.passwordTextField.isSecureTextEntry = (passwordVisibility == .hidden)
+        rootView.togglePasswordButton.setImage(passwordVisibility.icon, for: .normal)
     }
     
     private func setDelegate() {
         rootView.idTextField.delegate = self
         rootView.passwordTextField.delegate = self
     }
-    
 }
 
 // MARK: - UITextFieldDelegate
 
 extension LoginViewController: UITextFieldDelegate {
-    
     func textFieldDidChangeSelection(_ textField: UITextField) {
-        //        validateAndToggleLoginButton()
-        
         if textField == rootView.passwordTextField {
             if let text = textField.text, text.isEmpty {
                 rootView.allDeleteButton.isHidden = true
@@ -185,26 +163,11 @@ extension LoginViewController: UITextFieldDelegate {
         textField.layer.borderWidth = 0
         textField.layer.borderColor = nil
     }
-    
 }
 
 extension LoginViewController: LoginViewControllerProtocol {
     func dataBind(nickName: String) {
         print("LoginViewController의 userNickName에 \(nickName)이 대입 됌")
         self.userNickName = nickName
-    }
-}
-
-extension UIButton {
-    var isValid: Bool {
-        get {
-            backgroundColor == .black
-        }
-        
-        set {
-            setTitleColor(newValue ? .white: .gray2, for: .normal)
-            backgroundColor = newValue ? .tvingRed : .clear
-            isEnabled = newValue
-        }
     }
 }
