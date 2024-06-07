@@ -8,19 +8,25 @@
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
+    
     var window: UIWindow?
-
+    var coordinator: LoginCoordinator?
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
-        self.window = UIWindow(windowScene: windowScene)
+        let window = UIWindow(windowScene: windowScene)
+        self.window = window
         
-//        let navigationController = UINavigationController(rootViewController: LoginViewController(viewModel: LoginViewModel()))
-//        self.window?.rootViewController = navigationController
+        let navigationController = UINavigationController()
+        coordinator = LoginCoordinator(
+            navigationController: navigationController,
+            window: window
+        )
+        coordinator?.start()
         
-        self.window?.rootViewController = TVINGTabBarController()
-        self.window?.makeKeyAndVisible()
+        window.rootViewController = navigationController
+        window.makeKeyAndVisible()
     }
 }
 

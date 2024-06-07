@@ -12,6 +12,7 @@ final class WelcomeViewController: UIViewController {
     
     // MARK: - UIComponents
     
+    var coordinator: LoginCoordinator?
     private let rootView = WelcomeView()
     private let viewModel: WelcomeViewModel!
     private let disposeBag = DisposeBag()
@@ -59,16 +60,8 @@ final class WelcomeViewController: UIViewController {
         let output = viewModel.transform(input: input, disposeBag: disposeBag)
         
         output.pushToLogin.subscribe { [weak self] _ in
-            self?.pushToHomeViewController()
+            self?.coordinator?.showHomeViewController()
         }.disposed(by: disposeBag)
-    }
-    
-    private func pushToHomeViewController() {
-        guard let window = self.view.window else { return }
-        
-        let homeViewController = TVINGTabBarController()
-        window.rootViewController = homeViewController
-        window.makeKeyAndVisible()
     }
     
     func setWelcomeLabel(welcomeText: String) {

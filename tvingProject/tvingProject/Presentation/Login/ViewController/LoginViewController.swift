@@ -14,6 +14,7 @@ final class LoginViewController: UIViewController {
     
     // MARK: - Property
     
+    var coordinator: LoginCoordinator?
     private var userNickName: String = ""
     
     private let viewModel: LoginViewModel
@@ -71,7 +72,7 @@ final class LoginViewController: UIViewController {
         
         output.loginSuccess
             .subscribe { [weak self] _ in
-                self?.pushToLoginSuccess()
+                self?.loginSuccess()
             }.disposed(by: disposeBag)
         
         output.presentNicknameBottomSheet
@@ -107,15 +108,10 @@ final class LoginViewController: UIViewController {
         button.setTitleColor(style.titleColor, for: .normal)
     }
     
-    private func pushToLoginSuccess() {
-        let welcomeViewController = WelcomeViewController(viewModel: WelcomeViewModel())
-        
+    private func loginSuccess() {
         self.userNickName.isEmpty ?
-        welcomeViewController.setWelcomeLabel(welcomeText: rootView.idTextField.text ?? "") :
-        welcomeViewController.setWelcomeLabel(welcomeText: self.userNickName)
-        
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        navigationController?.pushViewController(welcomeViewController, animated: true)
+            coordinator?.showWelcomeViewController(nickname: rootView.idTextField.text ?? "") :
+            coordinator?.showWelcomeViewController(nickname: self.userNickName)
     }
     
     private func presentToNicknameBottomSheet() {

@@ -67,7 +67,7 @@ final class HomeViewModel: ViewModelType {
             mainModels: mainModels,
             imageDatas: imageDatas,
             titleLists: titleLists,
-            error: errorSubject.asDriver(onErrorJustReturn: "Unknown error")
+            error: errorSubject.asDriver(onErrorJustReturn: "error")
         )
     }
 }
