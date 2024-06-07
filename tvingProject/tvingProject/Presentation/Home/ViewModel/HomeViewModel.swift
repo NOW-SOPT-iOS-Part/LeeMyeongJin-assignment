@@ -13,7 +13,7 @@ import RxCocoa
 final class HomeViewModel: ViewModelType {
     
     struct Input {
-        let fetchTrigger: Observable<Void>
+        let viewDidLoad: Observable<Void>
     }
     
     struct Output {
@@ -33,7 +33,7 @@ final class HomeViewModel: ViewModelType {
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
         let errorSubject = PublishSubject<String>()
         
-        let mainModels = input.fetchTrigger
+        let mainModels = input.viewDidLoad
             .flatMapLatest { [repository] _ in
                 repository.getMainModels()
                     .catch { error in
@@ -43,7 +43,7 @@ final class HomeViewModel: ViewModelType {
             }
             .asDriver(onErrorJustReturn: [])
         
-        let imageDatas = input.fetchTrigger
+        let imageDatas = input.viewDidLoad
             .flatMapLatest { [repository] _ in
                 repository.getImageDatas()
                     .catch { error in
@@ -53,7 +53,7 @@ final class HomeViewModel: ViewModelType {
             }
             .asDriver(onErrorJustReturn: [:])
         
-        let titleLists = input.fetchTrigger
+        let titleLists = input.viewDidLoad
             .flatMapLatest { [repository] _ in
                 repository.getTitleLists()
                     .catch { error in

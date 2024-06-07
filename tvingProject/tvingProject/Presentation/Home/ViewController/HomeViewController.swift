@@ -90,7 +90,7 @@ final class HomeViewController: UIViewController {
     }
     
     private func bind() {
-        let input = HomeViewModel.Input(fetchTrigger: Observable.just(()))
+        let input = HomeViewModel.Input(viewDidLoad: Observable.just(()))
         
         let output = viewModel.transform(input: input, disposeBag: disposeBag)
         
