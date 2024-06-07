@@ -14,7 +14,7 @@ final class LoginViewController: UIViewController {
     
     // MARK: - Property
     
-    var userNickName: String = ""
+    private var userNickName: String = ""
     
     private let viewModel: LoginViewModel
     private let disposeBag = DisposeBag()

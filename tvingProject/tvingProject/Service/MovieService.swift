@@ -2,36 +2,34 @@
 //  MovieService.swift
 //  tvingProject
 //
-//  Created by 이명진 on 5/8/24.
+//  Created by 이명진 on 6/7/24.
 //
 
 import Foundation
-
 import Moya
+import RxSwift
+import RxMoya
 
-final class MovieService {
-    static let shared = MovieService()
-    private var movieProvider = MoyaProvider<MovieTargetType>(plugins: [MoyaLoggingPlugin()])
-    
-    private init() {}
+protocol MovieServiceType {
+    func fetchMovieChart(date: String) -> Observable<[DailyBoxOfficeList]>
 }
 
-extension MovieService {
-    func fetctMovieChart(date: String, completion: @escaping (NetworkResult<Any>) -> Void) {
-        movieProvider.request(.getMovieInfo(date: date)) { result in
-            switch result {
-            case .success(let response):
-                let statusCode = response.statusCode
-                let data = response.data
-                
-                let networkResult = self.judgeStatus(by: statusCode, data, MovieModel.self)
-                completion(networkResult)
-                
-            case .failure:
-                completion(.networkFail)
+final class MovieService: MovieServiceType {
+    
+    private var movieProvider = MoyaProvider<MovieTargetType>(plugins: [MoyaLoggingPlugin()])
+    
+    func fetchMovieChart(date: String) -> Observable<[DailyBoxOfficeList]> {
+        return movieProvider.rx.request(.getMovieInfo(date: date))
+            .filterSuccessfulStatusCodes()
+            .map(MovieModel.self)
+            .map { $0.boxOfficeResult.dailyBoxOfficeList }
+            .asObservable()
+            .catch { error in
+                print("⛔️ 서버 통신 오류: \(error)")
+                return Observable.just([])
             }
-        }
     }
+    
     
     public func judgeStatus<T: Codable>(by statusCode: Int, _ data: Data, _ object: T.Type) -> NetworkResult<Any> {
         
@@ -58,4 +56,3 @@ extension MovieService {
         return .success(decodedData as Any)
     }
 }
-

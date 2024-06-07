@@ -67,7 +67,11 @@ final class CenterViewController: UIViewController {
     }
     
     private let vc4: UIViewController = {
-        let vc = MovieViewController()
+        let vc = MovieViewController(
+            viewModel: MovieViewModel(
+                movieService: MovieService()
+            )
+        )
         return vc
     }()
     
