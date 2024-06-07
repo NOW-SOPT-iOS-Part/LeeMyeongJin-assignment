@@ -53,7 +53,13 @@ final class CenterViewController: UIViewController {
     }()
     
     private lazy var vc1: UIViewController = {
-        let vc = HomeViewController()
+        let vc = HomeViewController(
+            viewModel: HomeViewModel(
+                repository: HomeRepository(
+                    service: HomeService()
+                )
+            )
+        )
         vc.scrollDelegate = self
         return vc
     }()

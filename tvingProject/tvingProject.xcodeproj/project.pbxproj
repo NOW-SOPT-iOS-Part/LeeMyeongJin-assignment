@@ -50,6 +50,9 @@
 		71CA49CD2C12A3BA00D162BC /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 71CA49CC2C12A3BA00D162BC /* Moya */; };
 		71CA49CF2C12A3BA00D162BC /* ReactiveMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 71CA49CE2C12A3BA00D162BC /* ReactiveMoya */; };
 		71CA49D12C12A3BA00D162BC /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 71CA49D02C12A3BA00D162BC /* RxMoya */; };
+		71CA49D32C12A63A00D162BC /* HomeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CA49D22C12A63A00D162BC /* HomeService.swift */; };
+		71CA49D62C12A66100D162BC /* HomeRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CA49D52C12A66100D162BC /* HomeRepository.swift */; };
+		71CA49D82C12A69A00D162BC /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CA49D72C12A69A00D162BC /* HomeViewModel.swift */; };
 		71CF541E2BDA54C000A71277 /* UnderlineSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CF541D2BDA54C000A71277 /* UnderlineSegmentedControl.swift */; };
 		71CF54242BDAF10400A71277 /* HomeViewFooterViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CF54232BDAF10400A71277 /* HomeViewFooterViewCell.swift */; };
 		71CF54262BDAF14E00A71277 /* CancelBag+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CF54252BDAF14E00A71277 /* CancelBag+.swift */; };
@@ -119,6 +122,9 @@
 		71A659632BCA8A4C00583D62 /* NickNameBottomSheetVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NickNameBottomSheetVC.swift; sourceTree = "<group>"; };
 		71CA49C42C129E0600D162BC /* MovieViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieViewModel.swift; sourceTree = "<group>"; };
 		71CA49C72C129E4B00D162BC /* MovieService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieService.swift; sourceTree = "<group>"; };
+		71CA49D22C12A63A00D162BC /* HomeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeService.swift; sourceTree = "<group>"; };
+		71CA49D52C12A66100D162BC /* HomeRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRepository.swift; sourceTree = "<group>"; };
+		71CA49D72C12A69A00D162BC /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		71CF541D2BDA54C000A71277 /* UnderlineSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlineSegmentedControl.swift; sourceTree = "<group>"; };
 		71CF54232BDAF10400A71277 /* HomeViewFooterViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewFooterViewCell.swift; sourceTree = "<group>"; };
 		71CF54252BDAF14E00A71277 /* CancelBag+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CancelBag+.swift"; sourceTree = "<group>"; };
@@ -299,6 +305,7 @@
 				719041EE2BEB3DB800877F50 /* Model */,
 				71FCF2FB2BE3F55E00D8528A /* Protocol */,
 				71CA49C62C129E3E00D162BC /* Service */,
+				71CA49D42C12A64E00D162BC /* Repository */,
 				71A659312BC299EE00583D62 /* Presentation */,
 				71A6592A2BC298A400583D62 /* Info.plist */,
 			);
@@ -390,13 +397,31 @@
 			isa = PBXGroup;
 			children = (
 				71CA49C72C129E4B00D162BC /* MovieService.swift */,
+				71CA49D22C12A63A00D162BC /* HomeService.swift */,
 			);
 			path = Service;
+			sourceTree = "<group>";
+		};
+		71CA49D42C12A64E00D162BC /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				71CA49D52C12A66100D162BC /* HomeRepository.swift */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		71CA49D92C12A69C00D162BC /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				71CA49D72C12A69A00D162BC /* HomeViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		71D250792BD6B3A700F17278 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				71CA49D92C12A69C00D162BC /* ViewModel */,
 				71D250812BD6B4BC00F17278 /* Model */,
 				71D250802BD6B4B300F17278 /* Cell */,
 				71D2507F2BD6B4A600F17278 /* View */,
@@ -640,6 +665,7 @@
 				71D250872BD6B57700F17278 /* PopularLIVECell.swift in Sources */,
 				71D250832BD6B4FD00F17278 /* HomeModel.swift in Sources */,
 				719041F02BEB3DD200877F50 /* MovieModel.swift in Sources */,
+				71CA49D62C12A66100D162BC /* HomeRepository.swift in Sources */,
 				71A6595D2BC2BFCC00583D62 /* WelcomeViewController.swift in Sources */,
 				71D2509E2BD6D49400F17278 /* TextFieldFactory.swift in Sources */,
 				71FCF2F62BE3F51500D8528A /* LoginViewModel.swift in Sources */,
@@ -654,6 +680,7 @@
 				719041F22BEB400800877F50 /* Config.swift in Sources */,
 				71A659212BC298A200583D62 /* LoginViewController.swift in Sources */,
 				71D250A62BD8F5F600F17278 /* CompositionalLayout.swift in Sources */,
+				71CA49D32C12A63A00D162BC /* HomeService.swift in Sources */,
 				719042102BEB4D1700877F50 /* LabelFactory.swift in Sources */,
 				71FCF3042BE3F8D400D8528A /* Publisher+UIGesture.swift in Sources */,
 				718F0AE32BCE65DF00E2829D /* HalfSizePresentationController.swift in Sources */,
@@ -679,6 +706,7 @@
 				71D250962BD6C5D100F17278 /* TVINGTabBarItem.swift in Sources */,
 				719042122BEB622D00877F50 /* Formatter.swift in Sources */,
 				718F0AE62BCE81D000E2829D /* LoginView.swift in Sources */,
+				71CA49D82C12A69A00D162BC /* HomeViewModel.swift in Sources */,
 				71FCF2FD2BE3F56C00D8528A /* ViewModelType.swift in Sources */,
 				71A6591F2BC298A200583D62 /* SceneDelegate.swift in Sources */,
 				71A659532BC2A9A500583D62 /* UIView+.swift in Sources */,

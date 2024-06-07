@@ -6,7 +6,8 @@
 //
 
 import UIKit
-import Combine
+import RxSwift
+import RxCocoa
 
 import Then
 
@@ -33,17 +34,29 @@ final class HomeViewController: UIViewController {
     // MARK: - Properties
     
     weak var scrollDelegate: HomeViewScrollDelegate?
+    private let viewModel: HomeViewModel
+    private let disposeBag = DisposeBag()
     
-    // dummyDatas
-    private let titleLists: [String] = MainModel.getTitleLists()
-    private let imagesBySection: [Int: [UIImage]] = MainModel.getImageDatas()
-    private let mainModelItems: [MainModel] = MainModel.getData()
+    
+    private var titleLists: [String] = []
+    private var imagesBySection: [Int: [UIImage]] = [:]
+    private var mainModelItems: [MainModel] = []
     
     // MARK: - UI Components
     
     private let rootView = HomeView()
     
-    // MARK: - Life Cycles
+
+    // MARK: - LifeCycles
+    
+    init(viewModel: HomeViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func loadView() {
         self.view = rootView
@@ -54,6 +67,7 @@ final class HomeViewController: UIViewController {
         
         setDelegate()
         setRegister()
+        bind()
     }
     
     // MARK: - Methods
@@ -73,6 +87,45 @@ final class HomeViewController: UIViewController {
         
         rootView.homeCollectionView.register(HomeViewHeaderViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HomeViewHeaderViewCell.className)
         rootView.homeCollectionView.register(HomeViewFooterViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: HomeViewFooterViewCell.className)
+    }
+    
+    private func bind() {
+        let input = HomeViewModel.Input(fetchTrigger: Observable.just(()))
+        
+        let output = viewModel.transform(input: input, disposeBag: disposeBag)
+        
+        output.mainModels
+            .drive(onNext: { [weak self] mainModels in
+                self?.mainModelItems = mainModels
+                self?.rootView.homeCollectionView.reloadData()
+            })
+            .disposed(by: disposeBag)
+        
+        output.imageDatas
+            .drive(onNext: { [weak self] imageDatas in
+                self?.imagesBySection = imageDatas
+                self?.rootView.homeCollectionView.reloadData()
+            })
+            .disposed(by: disposeBag)
+        
+        output.titleLists
+            .drive(onNext: { [weak self] titleLists in
+                self?.titleLists = titleLists
+                self?.rootView.homeCollectionView.reloadData()
+            })
+            .disposed(by: disposeBag)
+        
+        output.error
+            .drive(onNext: { errorMessage in
+                self.showErrorAlert(message: errorMessage)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func showErrorAlert(message: String) {
+        let alert = UIAlertController(title: "에러 입니다 !!!!!!!", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
 }
 
@@ -139,9 +192,7 @@ extension HomeViewController: UICollectionViewDataSource {
         }
     }
     
-    
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        
         switch kind {
         case UICollectionView.elementKindSectionHeader:
             guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HomeViewHeaderViewCell.className, for: indexPath) as? HomeViewHeaderViewCell,
@@ -180,9 +231,9 @@ extension HomeViewController: UICollectionViewDataSource {
     }
 }
 
-
 // MARK: - UICollectionViewDelegate
 
 extension HomeViewController: UICollectionViewDelegate {
     // Implement any specific delegate methods
 }
+
