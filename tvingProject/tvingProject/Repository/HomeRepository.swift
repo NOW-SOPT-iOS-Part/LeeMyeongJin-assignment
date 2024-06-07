@@ -8,13 +8,13 @@
 import UIKit
 import RxSwift
 
-protocol MainRepositoryType {
+protocol HomeRepositoryType {
     func getMainModels() -> Observable<[MainModel]>
     func getImageDatas() -> Observable<[Int: [UIImage]]>
     func getTitleLists() -> Observable<[String]>
 }
 
-final class HomeRepository: MainRepositoryType {
+final class HomeRepository: HomeRepositoryType {
     private let service: HomeServiceType
     
     init(service: HomeServiceType) {

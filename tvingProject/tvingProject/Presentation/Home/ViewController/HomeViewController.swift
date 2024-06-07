@@ -90,7 +90,9 @@ final class HomeViewController: UIViewController {
     }
     
     private func bind() {
-        let input = HomeViewModel.Input(viewDidLoad: Observable.just(()))
+        let input = HomeViewModel.Input(
+            viewDidLoad: Observable.just(())
+        )
         
         let output = viewModel.transform(input: input, disposeBag: disposeBag)
         
@@ -124,7 +126,7 @@ final class HomeViewController: UIViewController {
     
     private func showErrorAlert(message: String) {
         let alert = UIAlertController(title: "에러 입니다 !!!!!!!", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
 }
@@ -234,6 +236,6 @@ extension HomeViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 
 extension HomeViewController: UICollectionViewDelegate {
-    // Implement any specific delegate methods
+    
 }
 

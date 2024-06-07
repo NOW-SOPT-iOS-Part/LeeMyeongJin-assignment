@@ -23,10 +23,10 @@ final class HomeViewModel: ViewModelType {
         let error: Driver<String>
     }
     
-    private let repository: MainRepositoryType
+    private let repository: HomeRepositoryType
     private let disposeBag = DisposeBag()
     
-    init(repository: MainRepositoryType) {
+    init(repository: HomeRepositoryType) {
         self.repository = repository
     }
     
