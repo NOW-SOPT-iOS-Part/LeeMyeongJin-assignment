@@ -193,6 +193,7 @@
 			isa = PBXGroup;
 			children = (
 				71A6595C2BC2BFCC00583D62 /* WelcomeViewController.swift */,
+				71A659632BCA8A4C00583D62 /* NickNameBottomSheetVC.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -307,6 +308,8 @@
 				71CA49C62C129E3E00D162BC /* Service */,
 				71CA49D42C12A64E00D162BC /* Repository */,
 				71A659312BC299EE00583D62 /* Presentation */,
+				71D250922BD6C42600F17278 /* TabBar */,
+				71D250A72BD8FEBE00F17278 /* UISegmentController */,
 				71A6592A2BC298A400583D62 /* Info.plist */,
 			);
 			path = tvingProject;
@@ -326,13 +329,10 @@
 		71A659312BC299EE00583D62 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				71D250A72BD8FEBE00F17278 /* UISegmentController */,
-				71D250922BD6C42600F17278 /* TabBar */,
 				71D250792BD6B3A700F17278 /* Home */,
 				719042042BEB4A5A00877F50 /* Movie */,
 				718F0AE42BCE81BE00E2829D /* Login */,
 				718F0AE72BCE89E300E2829D /* Welcome */,
-				71A659632BCA8A4C00583D62 /* NickNameBottomSheetVC.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
