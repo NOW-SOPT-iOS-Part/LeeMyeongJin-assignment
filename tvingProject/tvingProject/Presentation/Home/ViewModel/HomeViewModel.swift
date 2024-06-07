@@ -11,6 +11,7 @@ import RxSwift
 import RxCocoa
 
 final class HomeViewModel: ViewModelType {
+    
     struct Input {
         let fetchTrigger: Observable<Void>
     }

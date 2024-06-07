@@ -60,9 +60,9 @@ final class HomeViewFooterViewCell: UICollectionReusableView {
         bannerPageControl.numberOfPages = pageNumber
         
         input
-            .debounce(for: 0.15, scheduler: RunLoop.main)
+        //            .debounce(for: 0.15, scheduler: RunLoop.main)
             .sink { [weak self] currentPage in
-                print(currentPage)
+                //                print(currentPage)
                 self?.bannerPageControl.currentPage = currentPage
             }.store(in: cancelBag)
     }
